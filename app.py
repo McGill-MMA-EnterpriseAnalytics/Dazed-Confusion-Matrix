@@ -1,8 +1,11 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
+import streamlit_theme as stt
 import matplotlib.pyplot as plt
 import pydeck as pdk
+
+stt.set_theme({'primary': '#1b3388'})
 
 # Import data
 @st.cache(persist=True)
@@ -12,19 +15,33 @@ def load_data(path):
     data['longitude'] = pd.to_numeric(data['longitude'])
     data['Count_By_Neighborhood'] = data.groupby(['Neighborhood'])['Total Incidents'].transform('count')
     data = data.dropna()
-    return data
+    data_sample = data.sample(frac=0.1)
+    return data, data_sample
 
-df = load_data('BPD_CRIME_DATA_CLEAN_ST.csv')
+df, df_sample = load_data('BPD_CRIME_DATA_CLEAN_ST.csv')
 
 
 st.title('Dazed Confusion Matrix App')
+st.text('Marek, Andrea, Tiancheng, Sam, Bogdan')
 if st.checkbox("Show/Hide Data", False):
       st.subheader("Rows")
       st.write(df.head(10))
 
+col1, col2, = st.beta_columns(2)
+
+col1.text('Column 1')
+col2.text('Column 2')
+
 st.header('Crimes By Month')
 months = st.slider('Month To Look At', 1, 12)
 st.map(df.query('Month == @months')[['latitude', 'longitude']])
+
+st.header('Crimes By Weapon')
+crime_types = st.selectbox(
+    'Chose Crime Weapon',
+    ('KNIFE', 'FIREARM', 'HANDS', 'OTHER')
+)
+st.map(df.query('Weapon == @crime_types')[['latitude', 'longitude']])
 
 st.header('Crimes By Neighborhood')
 fig = plt.figure()
@@ -46,7 +63,7 @@ st.pydeck_chart(pdk.Deck(
     layers=[
         pdk.Layer(
             "HexagonLayer",
-            data=pd.DataFrame(df.sample(frac=0.3)),
+            data=df_sample,
             get_position=['longitude', 'latitude'],
             radius=50,
             elevation_scale=4,
