@@ -7,6 +7,15 @@ import pydeck as pdk
 
 stt.set_theme({'primary': '#1b3388'})
 
+admin = False
+c1 = st.sidebar.checkbox('Admin Mode', True)
+if c1:
+      admin = True
+      # st.sidebar.text(admin)
+else:
+    admin = False
+    # st.sidebar.text(admin)
+
 st.sidebar.image('./images/mcgill_logo.png')
 
 # Import data
@@ -18,11 +27,11 @@ def load_data(path):
     data['longitude'] = pd.to_numeric(data['longitude'])
     data['Count_By_Neighborhood'] = data.groupby(['Neighborhood'])['Total Incidents'].transform('count')
     data = data.dropna()
-    data_sample = data.sample(frac=0.05)
+    data_sample = data.sample(frac=0.03)
 
     # Model
     file = open('./YOLO_SWAG.txt')
-    #assert(file != None)
+    assert(file != None)
     model_txt = file.read()
 
     # Accuracy
@@ -42,7 +51,33 @@ st.title('Dazed Confusion Matrix App')
 st.sidebar.markdown('**By:** Marek, Andrea, Tiancheng, Sam, Bogdan')
 st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production')
 st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
-if st.checkbox("Show/Hide Data", False):
+
+st.sidebar.header('Get Prediction')
+nb_types = st.sidebar.selectbox(
+    'Chose Neighborhood',
+    df.Neighborhood.unique()
+)
+
+outside = st.sidebar.selectbox(
+    'Chose Location',
+    df['Inside/Outside'].unique()
+)
+
+premise_types = st.sidebar.selectbox(
+    'Chose Premise',
+    df.Premise.unique()
+)
+
+weapon_types = st.sidebar.selectbox(
+    'Chose Crime Weapon',
+    df.Weapon.unique()
+)
+
+hours = st.sidebar.slider('Hour To Look At', int(min(df.Hour.unique())), int(max(df.Hour.unique())))
+months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
+
+c2 = st.checkbox("Show/Hide Historical Data", False)
+if c2:
       st.subheader("Rows")
       st.write(df.head(10))
 
@@ -58,17 +93,13 @@ col1.write(model_metrics)
 col2.subheader('Features')
 col2.image('./images/feature_importance.png')
 
-st.header('Crimes By Month & Weapon')
+st.header('Our Prediction')
+st.text('Predicting crime based off parameters:')
+st.text('Hour: {}, Month: {}, Neighborhood: {}, Location {}, Premise: {}, Weapon: {}'.format(hours, months, nb_types, outside, premise_types, weapon_types))
+st.text('Prediction: {}'.format('ROBBERY - RESIDENCE'))
 
-st.sidebar.header('Get Prediction Based')
-
-st.sidebar.header('Filter Main Plot')
-months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
-crime_types = st.sidebar.selectbox(
-    'Chose Crime Weapon',
-    df.Weapon.unique()
-)
-st.map(df.query('(Month == @months) & (Weapon == @crime_types)')[['latitude', 'longitude']])
+st.header('Searching Map Based On Historic Data')
+st.map(df.query('(Month == @months) & (Weapon == @weapon_types) & (Hour == @hours) & (Premise == @premise_types)')[['latitude', 'longitude']])
 
 expander_1 = st.beta_expander('Crimes By Neighborhood')
 fig = plt.figure()
@@ -103,5 +134,6 @@ expander_2.pydeck_chart(pdk.Deck(
     ])
 )
 
-expander_3 = st.beta_expander('Model Text Output')
-expander_3.text(model_txt)
+if admin:
+    expander_3 = st.beta_expander('Model Text Output')
+    expander_3.text(model_txt)
