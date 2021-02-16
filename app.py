@@ -8,21 +8,37 @@ import pydeck as pdk
 stt.set_theme({'primary': '#1b3388'})
 
 st.sidebar.image('./images/mcgill_logo.png')
+
 # Import data
 @st.cache(persist=True)
 def load_data(path):
+    # Raw data
     data = pd.read_csv(path)
     data['latitude'] = pd.to_numeric(data['latitude'])
     data['longitude'] = pd.to_numeric(data['longitude'])
     data['Count_By_Neighborhood'] = data.groupby(['Neighborhood'])['Total Incidents'].transform('count')
     data = data.dropna()
     data_sample = data.sample(frac=0.05)
-    return data, data_sample
 
-df, df_sample = load_data('BPD_CRIME_DATA_CLEAN_ST.csv')
+    # Model
+    file = open('./YOLO_SWAG.txt')
+    #assert(file != None)
+    model_txt = file.read()
+
+    # Accuracy
+    model_metrics = pd.DataFrame(data=[['F1', '43.95 %'], ['Accuracy', '40.40 %'], ['Recall', '40.40 %'], ['Precision', '51.56 %']] ,
+                                 columns=['Measure', 'Score'])
+
+    # Check that we are not returning null information
+    #assert(data != None & data_sample != None & model_txt != None & model_metrics != None)
+
+    return data, data_sample, model_txt, model_metrics
+
+df, df_sample, model_txt, model_metrics = load_data('BPD_CRIME_DATA_CLEAN_ST.csv')
 
 
 st.title('Dazed Confusion Matrix App')
+
 st.sidebar.markdown('**By:** Marek, Andrea, Tiancheng, Sam, Bogdan')
 st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production')
 st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
@@ -30,16 +46,27 @@ if st.checkbox("Show/Hide Data", False):
       st.subheader("Rows")
       st.write(df.head(10))
 
-#col1, col2, = st.beta_columns(2)
 
-#col1.text('Column 1')
-#col2.text('Column 2')
+st.header('Model Information')
+st.text('Running on Light Gradient Boosting Machine')
+
+
+col1, col2, = st.beta_columns(2)
+col1.subheader('Score Metrics')
+col1.write(model_metrics)
+
+col2.subheader('Features')
+col2.image('./images/feature_importance.png')
 
 st.header('Crimes By Month & Weapon')
-months = st.sidebar.slider('Month To Look At', 1, 12)
+
+st.sidebar.header('Get Prediction Based')
+
+st.sidebar.header('Filter Main Plot')
+months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
 crime_types = st.sidebar.selectbox(
     'Chose Crime Weapon',
-    ('KNIFE', 'FIREARM', 'HANDS', 'OTHER')
+    df.Weapon.unique()
 )
 st.map(df.query('(Month == @months) & (Weapon == @crime_types)')[['latitude', 'longitude']])
 
@@ -75,3 +102,6 @@ expander_2.pydeck_chart(pdk.Deck(
         ),
     ])
 )
+
+expander_3 = st.beta_expander('Model Text Output')
+expander_3.text(model_txt)
