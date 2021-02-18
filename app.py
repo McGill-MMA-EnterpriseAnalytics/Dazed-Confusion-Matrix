@@ -63,7 +63,7 @@ def load_data(path1, path2, path3, path4, path5, path6, path7):
     return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
 
 
-df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('BPD_CRIME_DATA_CLEAN_ST.csv', 'Description_decoder.csv',
+df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('BPD_CRIME_DATA_CLEAN_ST.csv', 'Description_decoder_2.csv',
                                                                          'District_decoder.csv', 'Neighborhood_decoder.csv', 'Premise_decoder.csv', './YOLO_SWAG_MODEL.txt', 'Score_metrics.csv')
 
 
