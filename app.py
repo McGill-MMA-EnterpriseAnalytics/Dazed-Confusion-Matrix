@@ -168,6 +168,7 @@ col3.write(X_disp)
 prediction_prob, prediction = predict_description(X.T, model_txt)
 
 col4.subheader('Types Of Crimes')
+#print(description_decoder.values())
 prediction_prob_df = pd.DataFrame(columns=description_decoder.values(), data=np.round(prediction_prob, 2))
 prediction_prob = prediction_prob_df.transpose()
 prediction_prob.columns = ['Probability']
