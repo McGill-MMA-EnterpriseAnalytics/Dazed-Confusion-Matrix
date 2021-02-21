@@ -5,6 +5,6 @@
 ### Team Membe & Roles: 
  > * Andrea: Product Manager
  > * Sam: Business Strategist
- > * Bogdan: Architect
+ > * Bogdan: Software Developer / Architect
  > * Marek: Data Analyst
  > * Tiancheng: Data Analyst
