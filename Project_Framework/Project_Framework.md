@@ -1,4 +1,4 @@
-# Project Guidelines
+# Project Framework
 
 ## _[5.1 Framing the Problem](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Framing_the_Problem.md)_
 - Define the objective in business terms
