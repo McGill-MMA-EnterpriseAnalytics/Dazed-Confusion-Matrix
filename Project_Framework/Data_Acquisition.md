@@ -2,10 +2,10 @@
 *This project was developed with the purpose of beginning a research cycle into predictive policing for Baltimore. To do so, the team created an ideal situation under which data acquisition would be of a higher level so that future developments can build on our project towards this potential goal.*
 
 ###### __IDEAL SITUATION__
-The ideal situation is based on the orginal design of the opportunity presented by our team, under the logical hypothesis. This is also the overseeing goal of this project, to provide a basis to work towards this logical hypothesis long-term. 
+The ideal situation is based on the orginal design of the opportunity presented by our team, under the logical hypothesis. This is also the overseeing goal of this project, to provide a basis to work towards this [logical hypothesis](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Hypotheses.md) long-term. 
 
 ###### __PRACTICAL SITUATION__
-The practical situation is the situation under which this project was built, according to constraints such as time and resource availability. It follows the redesign of the hypothesis into an empirical hypothesis. 
+The practical situation is the situation under which this project was built, according to constraints such as time and resource availability. It follows the redesign of the hypothesis into an [empirical hypothesis](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Hypotheses.md). 
 
 ##### _List the data you need and how much you need_ 
 ---
