@@ -10,7 +10,7 @@
 - 	What would be the minimum performance needed to reach the business ob- jective?
 - 	What are comparable problems? Can you reuse experience or tools?
 - 	Is human expertise available?
-## _[Data Acquisition](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Data_Acquisition.md)_
+## _[5.2 Data Acquisition](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Data_Acquisition.md)_
 - 	List the data you need and how much you need
 - 	Find and document where you can get that data
 - 	Check how much space it will take
