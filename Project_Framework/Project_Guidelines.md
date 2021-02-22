@@ -1,6 +1,6 @@
 # Project Guidelines
 
-## _5.1 Framing the Problem_
+## _[5.1 Framing the Problem](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Framing_the_Problem.md)_
 - Define the objective in business terms
 - How will your solution be used?
 - What are the current solutions/workarounds (if any)?
@@ -22,7 +22,7 @@
 - 	Ensure sensitive information is deleted or protected (e.g. anonymized)
 - 	Check the size and type of the data (time series, sample, geographical, etc.)
 - 	Sample a test set, put it aside, and never look at it (no data snooping!)
-## _5.3 Data Exploration_
+## _[5.3 Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Visualization.ipynb)_
 - 	Create a copy of the data for exploration (sampling it down to a manageable size if necessary)
 - 	Create a Jupyter notebook to keep a record of your data exploration
 - How do you profile your data?
@@ -40,7 +40,7 @@
 - 	Identify the promising transformations you may want to apply
 - 	Identify extra data that would be useful (go back to “Get the Data”)
 - 	Document what you have learned
-## _5.4 Data Preparation_
+## _[5.4 Data Preparation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Cleaning)_
 - 	Dealing with missing data
 - 	Cleaning data
 - 	Outlier detection
@@ -53,7 +53,7 @@
 - It can be leveraged to come up with most relevant instances to use for training, validation, and testing
 - Obviously it can be used for unsupervised learning
 - Dealing with imbalanced data
-## _5.5 Modeling_
+## _[5.5 Modeling](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 - 	Train many quick and dirty models from different categories (e.g.,linear, naïve Bayes, SVM, Random Forests, neural net, etc.) using standard parameters
 - 	Measure and compare performance:
 - For each model, use N-fold cross-validation and compute the mean and standard deviation of the performance measure on the N folds.
@@ -64,22 +64,22 @@
 - 	Have one or two more quick iterations of the five previous steps.
 - 	Short-list the top three to five most promising models, preferring models that make different types of errors.
 
-## _5.6 Model Evaluation_
+## _[5.6 Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 	SOTA Supervised Learning SECTION
 
-## _5.7 Model Selection_
+## _[5.7 Model Selection](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 - 	Evaluation metrics
 - 	Simplicity
 - 	Explainability and interpretability
 - 	Offline vs. online
 - 	Batch vs. Real-time
-## _5.8 Model Fine-Tuning_
+## _[5.8 Model Fine-Tuning](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 - 	Fine-tune the hyperparameters using cross-validation
 - Treat your data transformation choices as hyperparameters, especially when you are not sure about them (e.g., should I replace missing values with zero or with the median value? Or just drop the rows?)
 - Unless there are very few hyperparameter values to explore, prefer random search over grid search. If training is very long, you may prefer a Bayesian optimization approach(e.g.,using Gaussian process priors, as described by Jasper Snoek, Hugo Larochelle, and Ryan Adams).
 - 	Try Ensemble methods. Combining your best models will often perform better than running them individually
 - 	Once you are confident about your final model, measure its performance on the test set to estimate the generalization error
-## _5.9 Solution Presentation_
+## _[5.9 Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - 	Document what you have done
 - Context
 --   Context should present your understanding of the business problem
@@ -87,7 +87,7 @@
 -- It should cover a bried resume of 5.1.Framing the problem
 -- It should give statistics about the current situation
 -- It should present objectives and benefits
-- Hypothesis
+- [Hypothesis](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Hypotheses.md)
 - Document and communicate the hypotheses in terms of 
 --What can be predicted/optimized
 -- What are the actions can be taken
@@ -101,10 +101,10 @@
 - Model	- Modeling Approach & Model Evaluation
 - Results
 -- 	Explainability of Results
-- 	Threats to Validity
+- 	[Threats to Validity](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Threats_to_Validity.md)
 - 	Conclusion
-- 	Lessons Learned and Next Steps
-## _5.10 Launching, Monitoring and Maintenance_
+- 	[Lessons Learned and Next Steps](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Future_Work.md)
+## _[5.10 Launching, Monitoring and Maintenance](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - Get your solution ready for production (plug into production data inputs, write unit tests, etc.)
 - W- te monitoring code to check your system’s live performance at regular intervals and trigger alerts when it drops.
 - Beware of slow degradation too: models tend to “rot” as data evolves
