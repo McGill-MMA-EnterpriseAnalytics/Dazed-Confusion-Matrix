@@ -1,6 +1,8 @@
 # **Dazed-Confusion-Matrix**
 ### INSY 695 Group Project - Crime in Baltimore
-### Data Source: https://www.kaggle.com/sohier/crime-in-baltimore 
+### Data Source: 
+- Baltimore Crime data: https://www.kaggle.com/sohier/crime-in-baltimore 
+- Baltimore 911 Calls: https://data.baltimorecity.gov/datasets/911-calls-for-service-2017
 ### Project Outline: [Project Framework](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Project_Framework)
 ### Team Members & Roles: 
  > * Andrea: Project Manager/Data Scientist
