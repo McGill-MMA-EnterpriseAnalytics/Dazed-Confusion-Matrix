@@ -40,6 +40,8 @@ df['Premise'] = df['Premise'].replace('RENTAL/VID', 'RETAIL/SMA')
 
 # Other Modifications
 
+df['Neighborhood'] = df['Neighborhood'].replace('Patterson Park Neighborho', 'Patterson Park')
+
 df.CrimeDate = pd.to_datetime(df.CrimeDate)
 df['Month'] = df.CrimeDate.dt.month
 
