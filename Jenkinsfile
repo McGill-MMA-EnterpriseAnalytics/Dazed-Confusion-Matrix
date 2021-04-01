@@ -11,7 +11,14 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '\'.docker/build\''
+        sh '"./develop up -d"'
+        sh '"./develop composer install"'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        sh '"./docker/build"'
       }
     }
 
