@@ -14,7 +14,7 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh 'docker run -it $(docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk \'NR==1{print $1}\')'
+        sh 'docker run $(docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk \'NR==1{print $1}\')'
       }
     }
 
