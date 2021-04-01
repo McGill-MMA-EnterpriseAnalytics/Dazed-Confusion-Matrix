@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    dockerfile true
-  }
+  agent any
   stages {
     stage('Initialize') {
       steps {
@@ -11,14 +9,8 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh './develop up -d'
-        sh './develop composer install'
-      }
-    }
-
-    stage('Package') {
-      steps {
-        sh './docker/build'
+        sh '''docker build -t dzcmregistry.azurecr.io/dashboard:latest  .
+'''
       }
     }
 
