@@ -9,8 +9,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '''sudo docker build -t dzcm:latest  .
-'''
+        sh 'docker build -t jenkins_docker .'
       }
     }
 
