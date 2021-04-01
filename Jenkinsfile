@@ -1,21 +1,10 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t dzcmregistry.azurecr.io/dashboard:latest  .'
-      }
+    agent { dockerfile true }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'python --version'
+            }
+        }
     }
-
-    stage('Run') {
-      steps {
-        sh '''docker run -d -p 80:80 dzcmregistry.azurecr.io/dashboard:latest
-'''
-      }
-    }
-
-  }
-  environment {
-    dockerfile = 'True'
-  }
 }
