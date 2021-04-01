@@ -8,7 +8,13 @@ pipeline {
   stages {
     stage('Initialize') {
       steps {
-        echo 'Starting dev Jenkins build.'
+        echo 'Image built - run or push after'
+      }
+    }
+
+    stage('') {
+      steps {
+        sh 'docker run -d -p 80:80 0b30329ce6f0f93f9595dd10d226996ddba222f1'
       }
     }
 
