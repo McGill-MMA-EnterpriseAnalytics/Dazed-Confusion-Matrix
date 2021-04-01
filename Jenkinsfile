@@ -14,7 +14,8 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'sudo docker build -t dzcm:latest  .'
+        sh 'newgrp docker'
+        sh 'docker build -t dzcm:latest  .'
       }
     }
 
