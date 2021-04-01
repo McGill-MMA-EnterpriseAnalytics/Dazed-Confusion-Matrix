@@ -9,7 +9,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '''docker build -t dzcmregistry.azurecr.io/dashboard:latest  .
+        sh '''docker build -t dzcm:latest  .
 '''
       }
     }
