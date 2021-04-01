@@ -3,8 +3,15 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh echo 'test'
+        sh 'docker build -t dzcmregistry.azurecr.io/dashboard:latest  .'
       }
     }
-  }  
-}
+
+    stage('Run') {
+      steps {
+        sh 'docker build -t dzcmregistry.azurecr.io/dashboard:latest  .'
+      }
+    }
+
+  }
+} 
