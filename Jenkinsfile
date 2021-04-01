@@ -1,7 +1,7 @@
 pipeline {
   agent {
     dockerfile {
-      filename 'dzcm:latest'
+      filename 'Dockerfile'
     }
 
   }
@@ -14,10 +14,13 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh '''docker run -d -p 80:80 dzcm:latest
+        sh '''docker run -d -p 80:80 dzcm_latest
 '''
       }
     }
 
+  }
+  environment {
+    dzcm_latest = 'docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk \'NR==1{print $1}\''
   }
 }
