@@ -1,12 +1,9 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-#import streamlit_theme as stt
 import matplotlib.pyplot as plt
 import pydeck as pdk
 import lightgbm as lgb
-
-stt.set_theme({'primary': '#1b3388'})
 
 admin = False
 c1 = st.sidebar.checkbox('Admin Mode', False)

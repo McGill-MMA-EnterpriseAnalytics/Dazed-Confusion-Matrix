@@ -11,4 +11,3 @@
  > * Bogdan: Software Developer / Architect
  > * Marek: Data Analyst
  > * Tiancheng: Data Analyst
-
