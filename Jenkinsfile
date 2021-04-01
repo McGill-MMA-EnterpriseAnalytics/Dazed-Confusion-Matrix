@@ -3,7 +3,6 @@ pipeline {
     dockerfile {
       filename 'Dockerfile'
     }
-
   }
   stages {
     stage('Initialize') {
