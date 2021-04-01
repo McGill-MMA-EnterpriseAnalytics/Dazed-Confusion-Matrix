@@ -14,7 +14,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'newgrp docker'
+        sh 'usermod -a -G docker jenkins'
         sh 'docker build -t dzcm:latest  .'
       }
     }
