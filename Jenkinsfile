@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    dockerfile {
+      filename 'Dockerfile'
+    }
+
+  }
   stages {
     stage('Initialize') {
       steps {
@@ -9,7 +14,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker build -t jenkins_docker .'
+        sh 'docker build -t dzcmregistry.azurecr.io/dashboard:latest  .'
       }
     }
 
