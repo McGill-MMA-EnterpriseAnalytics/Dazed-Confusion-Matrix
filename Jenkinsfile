@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    dockerfile {
-      filename 'Dockerfile'
-    }
-
-  }
+  agent any
   stages {
     stage('Initialize') {
       steps {
@@ -14,7 +9,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '''docker build -t dzcm:latest  .
+        sh '''sudo docker build -t dzcm:latest  .
 '''
       }
     }
