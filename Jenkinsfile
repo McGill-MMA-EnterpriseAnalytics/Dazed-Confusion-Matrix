@@ -9,9 +9,13 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh 'docker build -t dzcmregistry.azurecr.io/dashboard:latest  .'
+        sh '''docker run -d -p 80:80 dzcmregistry.azurecr.io/dashboard:latest
+'''
       }
     }
 
+  }
+  environment {
+    dockerfile = 'True'
   }
 }
