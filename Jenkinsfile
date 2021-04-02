@@ -2,10 +2,21 @@ pipeline {
   agent any
   stages {
     stage('Initialize') {
-      steps {
-        echo 'Image built - run or push after'
-        sh '''sudo fuser -k 8501/tcp || true
+      parallel {
+        stage('Initialize') {
+          steps {
+            echo 'Image built - run or push after'
+            sh '''sudo fuser -k 8501/tcp || true
 '''
+          }
+        }
+
+        stage('Test') {
+          steps {
+            sh 'pytest'
+          }
+        }
+
       }
     }
 
