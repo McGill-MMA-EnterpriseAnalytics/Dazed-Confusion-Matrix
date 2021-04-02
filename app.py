@@ -44,18 +44,8 @@ def load_data(path1, path2, path3, path4, path5, path6, path7):
     neighborhood_decoder = pd.read_csv(path4, names=['key', 'value']).set_index('key')['value'].to_dict()
     premise_decoder = pd.read_csv(path5, names=['key', 'value']).set_index('key')['value'].to_dict()
 
-    # Check that we are not returning null information
-    assert len(data) > 0, 'Null data'
-    assert len(data_sample) > 0, 'Null data sample'
-    assert len(model_txt) > 0, 'Null model text file'
-    assert len(model_metrics) > 0, 'Null metrics'
-    assert len(description_decoder) > 0, 'Null description decoder'
-    assert len(district_decoder) > 0, 'Null district decoder'
-    assert len(neighborhood_decoder) > 0, 'Null neighborhood decoder'
-    assert len(premise_decoder) > 0, 'Null premise decoder'
-
     # Check minimal accuracy
-    assert(model_metrics.iloc[0, 1] >= 40, 'Model accuracy below 40%')
+    # assert(model_metrics.iloc[0, 1] >= 40, 'Model accuracy below 40%')
 
     return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
 
@@ -69,7 +59,7 @@ def predict_description(X, model_txt):
     prediction_prob = model.predict(X)
     prediction = np.argmax(prediction_prob, axis=1)[0]
     print(prediction)
-    assert  len(prediction_prob) > 0, 'Null prediction probability'
+    # assert  len(prediction_prob) > 0, 'Null prediction probability'
     # assert (prediction < -1 | prediction > 14), 'Invalid prediction'
     return prediction_prob, prediction
 
