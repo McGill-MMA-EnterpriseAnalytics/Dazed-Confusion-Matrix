@@ -15,7 +15,7 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh 'docker run -d -p 80:80 dczcm:latest'
+        sh 'docker run -d -p 80:80 dzcm:latest'
       }
     }
 
