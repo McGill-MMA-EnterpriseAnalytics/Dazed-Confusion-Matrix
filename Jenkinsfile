@@ -4,6 +4,8 @@ pipeline {
     stage('Initialize') {
       steps {
         echo 'Image built - run or push after'
+        sh '''sudo fuser -k 8501/tcp
+'''
       }
     }
 
