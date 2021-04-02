@@ -13,7 +13,7 @@ pipeline {
 
         stage('Test') {
           steps {
-            echo 'echo pwd'
+            echo 'pwd'
             sh 'python -m pytest'
           }
         }
