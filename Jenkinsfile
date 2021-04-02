@@ -15,7 +15,8 @@ pipeline {
           steps {
             echo 'Running tests'
             sh 'pwd'
-            sh 'python -m pytest'
+            sh 'pip install pytest'
+            sh 'pytest'
           }
         }
 
