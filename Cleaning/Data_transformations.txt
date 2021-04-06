@@ -40,6 +40,8 @@ df['Premise'] = df['Premise'].replace('RENTAL/VID', 'RETAIL/SMA')
 
 # Other Modifications
 
+df['Neighborhood'] = df['Neighborhood'].replace('Patterson Park Neighborho', 'Patterson Park')
+
 df.CrimeDate = pd.to_datetime(df.CrimeDate)
 df['Month'] = df.CrimeDate.dt.month
 
@@ -50,8 +52,28 @@ df['Hour'] = [int(str(time)[:2]) for time in df.CrimeTime]
 df['Inside/Outside'] = df['Inside/Outside'].str.upper()
 df['Inside/Outside'] = df['Inside/Outside'].replace('I', 'INSIDE')
 df['Inside/Outside'] = df['Inside/Outside'].replace('O', 'OUTSIDE')
+df = pd.get_dummies(df, columns=["Inside/Outside"],drop_first=True)
+df = df.rename(columns={"Inside/Outside_OUTSIDE":"Outside"})
+
 
 df['Weapon'] = df['Weapon'].fillna('NONE')
+df = pd.get_dummies(df, columns=["Weapon"])
 
 
 df['Description'] = df['Description'].replace('RAPE', 'SEXUAL ASSAULT')
+
+
+from pandas.tseries.holiday import USFederalHolidayCalendar
+calendar = USFederalHolidayCalendar()
+df.CrimeDate = pd.to_datetime(df.CrimeDate)
+
+# Enter proper date range
+dr = pd.date_range(start='2012-01-01', end='2017-09-02')
+holidays = calendar.holidays(start=dr.min(), end=dr.max())
+df['Holiday'] = df['CrimeDate'].isin(holidays)
+df['Holiday'] = df['Holiday'].replace(False, 0)
+df['Holiday'] = df['Holiday'].replace(True, 1)
+
+df["Weekday"] = pd.to_datetime(df["CrimeDate"]).dt.dayofweek
+df["Weekend"] = (df["Weekday"] > 4).astype(int)
+df = df.drop(columns=["Weekday"])
