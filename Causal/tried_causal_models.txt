@@ -1,3 +1,5 @@
+# There were models and methods previously tested that did not work
+
 #%%
 # Create model
 model = CausalModel(data=df,
