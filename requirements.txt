@@ -1,6 +1,6 @@
+matplotlib==3.3.4
+pandas==1.2.2
+streamlit==0.79.0
 lightgbm==3.0.0
 pydeck==0.6.1
-streamlit==0.79.0
-matplotlib==3.3.4
 numpy==1.19.2
-pandas==1.2.2
