@@ -50,8 +50,8 @@ def load_data(path1, path2, path3, path4, path5, path6, path7):
     return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
 
 
-df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
-                                                                         './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './MODEL.txt', './data/Score_metrics.csv')
+df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('../data/BPD_CRIME_DATA_CLEAN_ST.csv', '../data/Description_decoder_2.csv',
+                                                                         '../data/District_decoder.csv', '../data/Neighborhood_decoder.csv', '../data/Premise_decoder.csv', './MODEL.txt', '../data/Score_metrics.csv')
 
 
 def predict_description(X, model_txt):
