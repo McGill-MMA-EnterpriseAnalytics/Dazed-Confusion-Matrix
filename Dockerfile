@@ -20,7 +20,7 @@ EXPOSE 80
 WORKDIR /app/App
 
 # Run unit testing on front-end application
-RUN pytest
+RUN python3 -m pytest
 
 # Run app using streamlit run app.py
 ENTRYPOINT ["streamlit", "run", "app.py"]
