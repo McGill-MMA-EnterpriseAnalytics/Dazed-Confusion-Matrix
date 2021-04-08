@@ -14,7 +14,7 @@ else:
     admin = False
     # st.sidebar.text(admin)
 
-st.sidebar.image('./images/mcgill_logo.png')
+# st.sidebar.image('./images/mcgill_logo.png')
 
 
 # Import data
