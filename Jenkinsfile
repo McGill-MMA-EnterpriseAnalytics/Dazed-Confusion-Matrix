@@ -17,7 +17,7 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh 'docker run -d -p 8501:8501 dzcm:latest'
+        sh 'docker run -d -p 80:80 dzcm:latest'
       }
     }
 
