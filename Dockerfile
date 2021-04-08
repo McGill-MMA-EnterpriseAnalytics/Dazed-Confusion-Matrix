@@ -17,7 +17,7 @@ EXPOSE 80
 # RUN cp credentials.toml ~/.streamlit/credentials.toml
 
 # Run unit testing on front-end application
-RUN python3 -m pytest .
+RUN python3 -m pytest ./
 
 # Go into the dashboard folder
 WORKDIR /app/App
