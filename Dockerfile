@@ -16,11 +16,14 @@ EXPOSE 80
 # RUN cp config.toml ~/.streamlit/config.toml
 # RUN cp credentials.toml ~/.streamlit/credentials.toml
 
+WORKDIR /app/App/Testing
+RUN python3 -m pytest
+
 # Go into the dashboard folder
 WORKDIR /app/App
 
 # Run unit testing on front-end application
-RUN python -m pytest App/Testing/
+RUN python -m pytest
 
 # Run app using streamlit run app.py
 ENTRYPOINT ["streamlit", "run", "app.py"]
