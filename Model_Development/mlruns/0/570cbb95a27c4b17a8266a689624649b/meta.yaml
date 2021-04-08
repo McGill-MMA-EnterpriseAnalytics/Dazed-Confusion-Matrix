@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Administrator/Documents/GitHub/Dazed-Confusion-Matrix/Model_Development/mlruns/0/570cbb95a27c4b17a8266a689624649b/artifacts
+end_time: 1617860139249
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 570cbb95a27c4b17a8266a689624649b
+run_uuid: 570cbb95a27c4b17a8266a689624649b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1617860137060
+status: 3
+tags: []
+user_id: Administrator
