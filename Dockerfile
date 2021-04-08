@@ -17,7 +17,7 @@ EXPOSE 80
 # RUN cp credentials.toml ~/.streamlit/credentials.toml
 
 WORKDIR /app/App/Testing
-RUN python3 -m pytest
+RUN python3 -m pytest /App/Testing
 
 # Go into the dashboard folder
 WORKDIR /app/App
