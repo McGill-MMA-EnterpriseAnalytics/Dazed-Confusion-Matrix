@@ -1,8 +1,8 @@
 # local imports
 import pytest
 from App import app
-df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = app.load_data('../data/BPD_CRIME_DATA_CLEAN_ST.csv', '../data/Description_decoder_2.csv',
-                                                                         '../data/District_decoder.csv', '../data/Neighborhood_decoder.csv', '../data/Premise_decoder.csv', './MODEL.txt', '../data/Score_metrics.csv')
+df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = app.load_data('app/data/BPD_CRIME_DATA_CLEAN_ST.csv', 'app/data/Description_decoder_2.csv',
+                                                                         'app/data/District_decoder.csv', 'app/data/Neighborhood_decoder.csv', 'app/data/Premise_decoder.csv', './MODEL.txt', 'app/data/Score_metrics.csv')
 
 
 def test_minimum_model_accuracy():
