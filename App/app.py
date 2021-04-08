@@ -14,8 +14,6 @@ else:
     admin = False
     # st.sidebar.text(admin)
 
-st.sidebar.image('./images/mcgill_logo.png')
-
 
 # Import data
 @st.cache(persist=True)
@@ -63,6 +61,7 @@ def predict_description(X, model_txt):
 
 
 st.title('Dazed Confusion Matrix App')
+st.sidebar.image('./images/mcgill_logo.png')
 st.sidebar.markdown('**By:** Marek, Andrea, Tiancheng, Sam, Bogdan')
 st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production')
 st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
