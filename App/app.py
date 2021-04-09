@@ -4,205 +4,289 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import pydeck as pdk
 import lightgbm as lgb
+from SessionState import get
+
 import os.path as path
 two_up = path.abspath(path.join(__file__ ,"../.."))
 
-admin = False
-c1 = st.sidebar.checkbox('Admin Mode', False)
-if c1:
-      admin = True
-      # st.sidebar.text(admin)
-else:
+# Initialize empty session
+session_state = get(password='')
+
+def main():
+    st.title('Dazed Confusion Matrix App')
+
+    # ADMIN MODE
+    ##################################################################################################################
     admin = False
-    # st.sidebar.text(admin)
+    c1 = st.sidebar.checkbox('Admin Mode', False)
+    if c1:
+          admin = True
+          # st.sidebar.text(admin)
+    else:
+        admin = False
+        # st.sidebar.text(admin)
+    ##################################################################################################################
+
+    # LOAD DATA
+    ##################################################################################################################
+    @st.cache(persist=True)
+    def load_data(path1, path2, path3, path4, path5, path6, path7):
+        # Raw data
+        data = pd.read_csv(path1)
+        data['latitude'] = pd.to_numeric(data['Latitude'])
+        data['longitude'] = pd.to_numeric(data['Longitude'])
+        data['Location'] = data['Inside/Outside']
+        data = data.drop(columns=['Latitude', 'Longitude', 'Inside/Outside'])
+        # data['Count_By_Neighborhood'] = data.groupby(['Neighborhood'])['Total Incidents'].transform('count')
+        data = data.dropna()
+        data_sample = data.sample(frac=0.025)
+
+        # Model
+        file = open(path6)
+        model_txt = file.read()
+
+        # Accuracy
+        model_metrics = pd.read_csv(path7, dtype={'Measure': 'str', 'Score': 'float'})
+        # model_metrics = pd.DataFrame(data=[['F1', 43.95], ['Accuracy', 40.40], ['Recall', 40.40], ['Precision', 51.56]] , columns=['Measure', 'Score'])
+
+        # Decoders/Encoders
+        description_decoder = pd.read_csv(path2, names=['value', 'key']).set_index('key')['value'].to_dict()
+        district_decoder = pd.read_csv(path3, names=['key', 'value']).set_index('key')['value'].to_dict()
+        neighborhood_decoder = pd.read_csv(path4, names=['key', 'value']).set_index('key')['value'].to_dict()
+        premise_decoder = pd.read_csv(path5, names=['key', 'value']).set_index('key')['value'].to_dict()
+
+        # Check minimal accuracy
 
 
-# Import data
-@st.cache(persist=True)
-def load_data(path1, path2, path3, path4, path5, path6, path7):
-    # Raw data
-    data = pd.read_csv(path1)
-    data['latitude'] = pd.to_numeric(data['Latitude'])
-    data['longitude'] = pd.to_numeric(data['Longitude'])
-    data['Location'] = data['Inside/Outside']
-    data = data.drop(columns=['Latitude', 'Longitude', 'Inside/Outside'])
-    # data['Count_By_Neighborhood'] = data.groupby(['Neighborhood'])['Total Incidents'].transform('count')
-    data = data.dropna()
-    data_sample = data.sample(frac=0.025)
-
-    # Model
-    file = open(path6)
-    model_txt = file.read()
-
-    # Accuracy
-    model_metrics = pd.read_csv(path7, dtype={'Measure': 'str', 'Score': 'float'})
-    # model_metrics = pd.DataFrame(data=[['F1', 43.95], ['Accuracy', 40.40], ['Recall', 40.40], ['Precision', 51.56]] , columns=['Measure', 'Score'])
-
-    # Decoders/Encoders
-    description_decoder = pd.read_csv(path2, names=['value', 'key']).set_index('key')['value'].to_dict()
-    district_decoder = pd.read_csv(path3, names=['key', 'value']).set_index('key')['value'].to_dict()
-    neighborhood_decoder = pd.read_csv(path4, names=['key', 'value']).set_index('key')['value'].to_dict()
-    premise_decoder = pd.read_csv(path5, names=['key', 'value']).set_index('key')['value'].to_dict()
-
-    # Check minimal accuracy
+        return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
 
 
-    return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
+    df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
+                                                                             './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './MODEL.txt', './data/Score_metrics.csv')
+
+    ##################################################################################################################
+
+    # PREDICT
+    ##################################################################################################################
+    def predict_description(X, model_txt):
+        model = lgb.Booster(model_str=model_txt)
+        prediction_prob = model.predict(X)
+        prediction = np.argmax(prediction_prob, axis=1)[0]
+        print(prediction)
+        return prediction_prob, prediction
+    ##################################################################################################################
 
 
-df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
-                                                                         './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './MODEL.txt', './data/Score_metrics.csv')
+    # SIDEBAR
+    ##################################################################################################################
+    st.sidebar.image('./images/bpd_logo.png', width=150)
+    st.sidebar.markdown('**By:** Marek, Andrea, Tiancheng, Sam, Bogdan')
+    st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production II')
+    st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
+
+    st.sidebar.header('Get Prediction')
+    nb_types = st.sidebar.selectbox(
+        'Chose Neighborhood',
+        df.Neighborhood.unique()
+    )
+
+    location_types = st.sidebar.selectbox(
+        'Chose Location',
+        df.Location.unique()
+    )
+
+    premise_types = st.sidebar.selectbox(
+        'Chose Premise',
+        df.Premise.unique()
+    )
+
+    weapon_types = st.sidebar.selectbox(
+        'Chose Crime Weapon',
+        df.Weapon.unique()
+    )
+
+    hours = st.sidebar.slider('Hour To Look At', int(min(df.Hour.unique())), int(max(df.Hour.unique())))
+    months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
+    st.sidebar.markdown('')
+    st.sidebar.markdown('')
+    st.sidebar.markdown('')
+    st.sidebar.markdown('')
+    st.sidebar.markdown('')
+    st.sidebar.markdown('')
+    st.sidebar.markdown('**Version:** 2.0')
+    st.sidebar.image('./images/mcgill_logo.png')
+    ##################################################################################################################
 
 
-def predict_description(X, model_txt):
-    model = lgb.Booster(model_str=model_txt)
-    prediction_prob = model.predict(X)
-    prediction = np.argmax(prediction_prob, axis=1)[0]
-    print(prediction)
-    return prediction_prob, prediction
+    # MODEL INFO
+    ##################################################################################################################
+    c2 = st.checkbox("Show/Hide Historical Data", False)
+    if c2:
+          st.subheader("Rows")
+          st.write(df.head(10))
 
 
-st.title('Dazed Confusion Matrix App')
-st.sidebar.image('./images/mcgill_logo.png')
-st.sidebar.markdown('**By:** Marek, Andrea, Tiancheng, Sam, Bogdan')
-st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production')
-st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
+    st.header('Model Information')
+    st.text('Running on Light Gradient Boosting Machine - Tuned with MLfLow Autolog')
 
-st.sidebar.header('Get Prediction')
-nb_types = st.sidebar.selectbox(
-    'Chose Neighborhood',
-    df.Neighborhood.unique()
-)
+    col1, col2,  = st.beta_columns(2)
+    col1.subheader('Score Metrics')
+    col1.write(model_metrics)
 
-location_types = st.sidebar.selectbox(
-    'Chose Location',
-    df.Location.unique()
-)
+    col2.subheader('Features')
+    col2.image('./images/feature_importance.png', width=400)
 
-premise_types = st.sidebar.selectbox(
-    'Chose Premise',
-    df.Premise.unique()
-)
+    mflow_exp = st.beta_expander('MLflow Reporting')
+    mflow_exp.subheader('Training Run One')
+    mflow_exp.image('./images/911_1.JPG')
+    mflow_exp.subheader('Testing Run Two')
+    mflow_exp.image('./images/911_2.JPG')
+    ##################################################################################################################
 
-weapon_types = st.sidebar.selectbox(
-    'Chose Crime Weapon',
-    df.Weapon.unique()
-)
+    st.header('Our Prediction')
 
-hours = st.sidebar.slider('Hour To Look At', int(min(df.Hour.unique())), int(max(df.Hour.unique())))
-months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
+    # GET PREDICTION WITH INPUT
+    ##################################################################################################################
+    # Get prediction
+    column_names = ['Outside', 'Weapon_FIREARM', 'Weapon_HANDS', 'Weapon_KNIFE', 'Weapon_NONE',
+                    'Weapon_OTHER', 'Neighborhood', 'Premise', 'Month','Hour']
 
-st.sidebar.markdown('**Version:** 1.0')
+    # Encode outside
+    outside = 0
+    if location_types == 'OUTSIDE':
+        outside = 1
 
-c2 = st.checkbox("Show/Hide Historical Data", False)
-if c2:
-      st.subheader("Rows")
-      st.write(df.head(10))
+    # Encode weapons
+    wp_firearm, wp_hands, wp_knife, wp_none, wp_other = 0, 0, 0, 0, 0
+    if weapon_types == 'FIREARM':
+        wp_firearm = 1
+    if weapon_types == 'HANDS':
+        wp_hands = 1
+    if weapon_types == 'KNIFE':
+        wp_knife = 1
+    if weapon_types == 'NONE':
+        wp_none = 1
+    if weapon_types == 'OTHER':
+        wp_other = 1
 
+    neighborhood_enc = neighborhood_decoder[nb_types]
+    premise_enc = premise_decoder[premise_types]
 
-st.header('Model Information')
-st.text('Running on Light Gradient Boosting Machine')
+    X = pd.DataFrame(data=[outside, wp_firearm, wp_hands, wp_knife, wp_none, wp_other, neighborhood_enc, premise_enc, months, hours])
 
+    col3, col4,  = st.beta_columns(2)
 
-col1, col2,  = st.beta_columns(2)
-col1.subheader('Score Metrics')
-col1.write(model_metrics)
+    col3.subheader('Prediction Input')
+    X_disp = X.T
+    X_disp.columns = column_names
+    X_disp = X_disp.transpose()
+    X_disp.columns = ['Values']
+    col3.write(X_disp)
 
-col2.subheader('Features')
-col2.image('./images/feature_importance.png')
+    prediction_prob, prediction = predict_description(X.T, model_txt)
 
-st.header('Our Prediction')
+    col4.subheader('Types Of Crimes')
+    #print(description_decoder.values())
+    prediction_prob_df = pd.DataFrame(columns=description_decoder.values(), data=np.round(prediction_prob, 2))
+    prediction_prob = prediction_prob_df.transpose()
+    prediction_prob.columns = ['Probability']
+    col4.write(prediction_prob)
 
-# st.text('Hour: {}, Month: {}, Neighborhood: {}, Location {}, Premise: {}, Weapon: {}'.format(hours, months, nb_types, location_types, premise_types, weapon_types))
+    #st.text(prediction)
+    st.text('Most likely crime type given the profile: {}'.format(description_decoder[prediction]))
+    midpoint = [np.average(df['latitude']), np.average(df['longitude'])]
+    st.header('Searching Map Based On Historical Data')
+    st.map((df.query('(Location == @location_types) & (Month == @months) & (Weapon == @weapon_types) & (Hour == @hours) & (Premise == @premise_types)')[['latitude', 'longitude']]))
+    ##################################################################################################################
 
-# Get prediction
-column_names = ['Outside', 'Weapon_FIREARM', 'Weapon_HANDS', 'Weapon_KNIFE', 'Weapon_NONE',
-                'Weapon_OTHER', 'Neighborhood', 'Premise', 'Month','Hour']
+    # CAUSAL LIFT
+    ##################################################################################################################
+    exp_causal = st.beta_expander('Demographic Causal Lift Analysis')
+    exp_causal.text('An example of causal model setup we want to predict. '
+            'Where we use demographic data as treatment to analyze effects on description. '
+            'This helps us better understand issues related to bias/fairness.')
+    exp_causal.image('./images/causal_model.png')
+    exp_causal.text('Here we present some of our significant findings. We used a mean total value and assign treatment to false if it is below it.')
 
-# Encode outside
-outside = 0
-if location_types == 'OUTSIDE':
-    outside = 1
+    demographic_type = exp_causal.selectbox(
+        'Chose a demographic treatment variable',
+        ('Median House Income', 'Poverty Level', 'Percentage 18-24', 'Percentage 25-64', 'Percentage Asian',
+         'Percentage African American', 'Percentage  Hispanic', 'Percentage White', 'Median Price Homes Sold')
+    )
+    if demographic_type == 'Median House Income':
+        exp_causal.image('./images/cl_1.png')
+    if demographic_type == 'Poverty Level':
+        exp_causal.image('./images/cl_9.png')
+    if demographic_type == 'Percentage 18-24':
+        exp_causal.image('./images/cl_2.png')
+    if demographic_type == 'Percentage 25-64':
+        exp_causal.image('./images/cl_3.png')
+    if demographic_type == 'Percentage Asian':
+        exp_causal.image('./images/cl_4.png')
+    if demographic_type == 'Percentage African American':
+        exp_causal.image('./images/cl_5.png')
+    if demographic_type == 'Percentage Hispanic':
+        exp_causal.image('./images/cl_6.png')
+    if demographic_type == 'Percentage White':
+        exp_causal.image('./images/cl_7.png')
+    if demographic_type == 'Median Price Homes Sold':
+        exp_causal.image('./images/cl_8.png')
+    ##################################################################################################################
 
-# Encode weapons
-wp_firearm, wp_hands, wp_knife, wp_none, wp_other = 0, 0, 0, 0, 0
-if weapon_types == 'FIREARM':
-    wp_firearm = 1
-if weapon_types == 'HANDS':
-    wp_hands = 1
-if weapon_types == 'KNIFE':
-    wp_knife = 1
-if weapon_types == 'NONE':
-    wp_none = 1
-if weapon_types == 'OTHER':
-    wp_other = 1
+    # OTHER INFO
+    ##################################################################################################################
+    expander_1 = st.beta_expander('3D Map')
+    expander_1.pydeck_chart(pdk.Deck(
+        map_style='mapbox://styles/mapbox/light-v9',
+        initial_view_state={
+            'latitude': midpoint[0],
+            'longitude': midpoint[1],
+            'zoom': 11.5,
+            'pitch': 60,
+        },
+        layers=[
+            pdk.Layer(
+                "HexagonLayer",
+                data=df_sample,
+                get_position=['longitude', 'latitude'],
+                radius=50,
+                elevation_scale=4,
+                elevation_rang=[0, 3000],
+                pickable=True,
+                extruded=True,
+                auto_highlight=True,
+                coverage=1,
+            ),
+        ])
+    )
 
-neighborhood_enc = neighborhood_decoder[nb_types]
-premise_enc = premise_decoder[premise_types]
+    expander_2 = st.beta_expander('Data Exploration Plots')
+    expander_2.subheader('Crimes By Neighborhood')
+    expander_2.image('./images/map2.png')
 
-X = pd.DataFrame(data=[outside, wp_firearm, wp_hands, wp_knife, wp_none, wp_other, neighborhood_enc, premise_enc, months, hours])
+    #fig = plt.figure()
+    #ax = fig.add_subplot(1, 1, 1)
+    #ax.scatter(x=df['longitude'], y=df['latitude'], alpha=0.3,
+    #            c=df['Count_By_Neighborhood'], cmap=plt.get_cmap('jet')
 
-col3, col4,  = st.beta_columns(2)
+    expander_2.subheader('Total Incidents By Weapon')
+    expander_2.image('./images/cat_plot2.png')
 
-col3.subheader('Prediction Input')
-X_disp = X.T
-X_disp.columns = column_names
-X_disp = X_disp.transpose()
-X_disp.columns = ['Values']
-col3.write(X_disp)
+    if admin:
+        expander_3 = st.beta_expander('Model Text Output')
+        expander_3.text(model_txt)
+    ##################################################################################################################
 
-prediction_prob, prediction = predict_description(X.T, model_txt)
-
-col4.subheader('Types Of Crimes')
-#print(description_decoder.values())
-prediction_prob_df = pd.DataFrame(columns=description_decoder.values(), data=np.round(prediction_prob, 2))
-prediction_prob = prediction_prob_df.transpose()
-prediction_prob.columns = ['Probability']
-col4.write(prediction_prob)
-
-#st.text(prediction)
-st.text('Most likely crime type given the profile: {}'.format(description_decoder[prediction]))
-midpoint = [np.average(df['latitude']), np.average(df['longitude'])]
-st.header('Searching Map Based On Historical Data')
-st.map((df.query('(Location == @location_types) & (Month == @months) & (Weapon == @weapon_types) & (Hour == @hours) & (Premise == @premise_types)')[['latitude', 'longitude']]))
-
-expander_1 = st.beta_expander('3D Map')
-expander_1.pydeck_chart(pdk.Deck(
-    map_style='mapbox://styles/mapbox/light-v9',
-    initial_view_state={
-        'latitude': midpoint[0],
-        'longitude': midpoint[1],
-        'zoom': 11.5,
-        'pitch': 60,
-    },
-    layers=[
-        pdk.Layer(
-            "HexagonLayer",
-            data=df_sample,
-            get_position=['longitude', 'latitude'],
-            radius=50,
-            elevation_scale=4,
-            elevation_rang=[0, 3000],
-            pickable=True,
-            extruded=True,
-            auto_highlight=True,
-            coverage=1,
-        ),
-    ])
-)
-
-expander_2 = st.beta_expander('Data Exploration Plots')
-expander_2.subheader('Crimes By Neighborhood')
-expander_2.image('./images/map2.png')
-
-#fig = plt.figure()
-#ax = fig.add_subplot(1, 1, 1)
-#ax.scatter(x=df['longitude'], y=df['latitude'], alpha=0.3,
-#            c=df['Count_By_Neighborhood'], cmap=plt.get_cmap('jet')
-
-expander_2.subheader('Total Incidents By Weapon')
-expander_2.image('./images/cat_plot2.png')
-
-if admin:
-    expander_3 = st.beta_expander('Model Text Output')
-    expander_3.text(model_txt)
+# AUTHENTICATION
+if session_state.password != 'dzcm21bdp':
+    st.text('Please enter the administrator password')
+    pwd_placeholder = st.empty()
+    pwd = pwd_placeholder.text_input("Password:", value="", type="password")
+    session_state.password = pwd
+    if session_state.password == 'dzcm21bdp':
+        pwd_placeholder.empty()
+        main()
+    else:
+        st.error("the password you entered is incorrect")
+else:
+    main()
