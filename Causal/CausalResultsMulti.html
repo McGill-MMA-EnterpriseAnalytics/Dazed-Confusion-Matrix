@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CausalResultsMulti</title><script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=55VkFvICRlKcqKEBkTZnucvRgijZxykM5dX_cUF6SGrVl6j3KDGvhdn8H4ZCzz5w0vonF1UFPaRKgrTtoybxUAEWZd3nm8hShId41xWmVK2wjp_qG55D3lGVL8-ckgnZoxz_x8THQQ1XfV_gqz5Jz4OhJpO-aBHGN2vfrbb_5-tPsd6loPIAqX59IeL-9bjPzwd9AEvrrnmxC6aAPZcWMa-6YPQ2E10kqBf2f79m6NLCe4tl1gzyJ-mc5GYDSLz5VIYKzVCJo68FLLVg22gEV-ZbUQ0YOxDpb-M92bRvzT4" charset="UTF-8"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>CausalResultsMulti</title><script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=KCIBgPwe_64AD0qUHhgTSER9fmL4s_84eJeVlE9KfbkOpeWHS_BFL8VtSpAw8aExSeT1ANz0pxkGpUJaiT1hpfqwDyCxYlYS2GnAB7PAx_QwL255b86YD9G3_f42MYqUO8IenFh3B88OR8WaXFxoJBQ5rGG4yP0MyBRh5Vl3u9r8chvW_49GHz4VeCUZE9glYM-NRLNZAzLaZpSTxszLkxBcRUeAkyyyXFsjavAwmlYsg8boUoyUM1VE6eE3jJmB2K0O_9NULtV9Q_XOSNKXiCFSdUeyZdzB8PYz922V5Y0" charset="UTF-8"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,7 +14259,16 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h1>
+<h1 id="Causal-Inference-With-Multiple-Categorical-Target">Causal Inference With Multiple Categorical Target<a class="anchor-link" href="#Causal-Inference-With-Multiple-Categorical-Target">&#182;</a></h1><p>This ended being our main causal inference model using the Causal Lift model. It is easy to use and works well will categorical data.</p>
+<p>Our main objective was to use our original data along with each demographic variable as a treatment. This might help us understand issues of bias/fairness as well as how to tackle other modeling tasks. We kept this to the original data to simplify the process as adding 991 would be a challenge and does not provide much more insights given our objective. The objective is to see how demographic factors have an effect on the different predicted categories and on the initial features that we used for our models.</p>
+<p>We did this analysis by create treatment variables that are 1 if an observation is blow average and 0 if it is over in a certain category. This way, we can test based on each of the demographic variable. This is an approximation, but it is needed for such an analysis.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h1><p>We run this analysis by getting the causal_lift_model function from the CausalModel.py file. It sets the data into the right format and uses the Causal Lift package for the analysis.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14282,6 +14291,12 @@ a.anchor-link {
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We use our initial inputed data that is merged with demographics for the analysis.</p>
+
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
@@ -14350,7 +14365,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">description_decoder</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Only for reference and not as useful when looking at multiple categories instead of binary</span>
+<span class="n">description_decoder</span>
 </pre></div>
 
      </div>
@@ -14398,7 +14414,8 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Median-House-Income">Is Below Average Median House Income<a class="anchor-link" href="#Is-Below-Average-Median-House-Income">&#182;</a></h1>
+<h1 id="Is-Below-Average-Median-House-Income">Is Below Average Median House Income<a class="anchor-link" href="#Is-Below-Average-Median-House-Income">&#182;</a></h1><p>We would expect a below average median house income to be a driver in terms of violence and criminality. This should have an impact on the model when moderated for.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -14430,26 +14447,26 @@ a.anchor-link {
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:56:30,573|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:30,594|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:56:30,667|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:30,668|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:30,693|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:30,706|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:56:30,736|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:56:30,745|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:56:30,750|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:56:30,760|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:56:30,765|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:56:30,766|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:30,768|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:30,782|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:56:30,831|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:56:30,832|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:46:26,248|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:26,267|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:46:26,344|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:26,345|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:26,371|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:26,388|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:46:26,393|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:46:26,403|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:46:26,440|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:46:26,449|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:46:26,453|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:46:26,454|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:26,459|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:26,474|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:46:26,637|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:46:26,638|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:56:44,976|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:46:43,035|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:56:44,977|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:46:43,038|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -14521,11 +14538,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:44,997|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:44,999|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:45,002|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:45,016|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:56:45,076|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:43,066|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:43,068|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:43,076|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:43,091|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:46:43,140|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -14554,7 +14571,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:45,244|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:43,442|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -14636,7 +14653,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:45,565|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:43,840|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -14697,7 +14714,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:45,706|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:43,997|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -14758,10 +14775,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:45,800|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:45,801|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:45,832|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6527724992398906
-[2021-04-07 13:56:45,833|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6527695961995249
+<pre>[2021-04-08 18:46:44,100|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:44,101|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:44,131|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6527724992398906
+[2021-04-08 18:46:44,132|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6527695961995249
 </pre>
 </div>
 </div>
@@ -14773,7 +14790,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Poverty">Is Below Average Poverty<a class="anchor-link" href="#Is-Below-Average-Poverty">&#182;</a></h1>
+<p>It's interesting to see high positive values for weapons that are key indicators for crime violence and for predicting description. We also see that using this treatment gives a higher relate score for both train and test than our original models and most other treatments. This is in line with our hypothesis.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Poverty">Is Below Average Poverty<a class="anchor-link" href="#Is-Below-Average-Poverty">&#182;</a></h1><p>We expect this to be a similar indicator as is below average median house income as both variables should be correlated.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -14818,26 +14842,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:56:46,022|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:46,035|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:56:46,099|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:46,100|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:46,126|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:46,138|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:56:46,163|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:56:46,170|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:56:46,173|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:56:46,180|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:56:46,184|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:56:46,186|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:46,189|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:46,203|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:56:46,216|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:56:46,217|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:46:44,342|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:44,359|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:46:44,429|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:44,430|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:44,452|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:44,467|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:46:44,471|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:46:44,479|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:46:44,509|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:46:44,517|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:46:44,522|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:46:44,522|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:44,528|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:44,551|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:46:44,569|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:46:44,570|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:56:52,367|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:46:52,287|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:56:52,368|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:46:52,288|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -14909,11 +14933,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:52,383|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:52,385|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:52,388|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:52,406|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:56:52,454|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:52,302|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:52,303|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:52,312|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:52,330|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:46:52,379|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -14942,7 +14966,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:52,589|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:52,526|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -15024,7 +15048,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:52,947|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:52,918|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -15085,7 +15109,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:53,091|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:46:53,062|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -15146,10 +15170,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:56:53,189|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:53,190|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:53,218|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.5209172620857403
-[2021-04-07 13:56:53,219|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.5209121140142517
+<pre>[2021-04-08 18:46:53,159|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:53,160|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:53,186|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.5209172620857403
+[2021-04-08 18:46:53,187|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.5209121140142517
 </pre>
 </div>
 </div>
@@ -15161,7 +15185,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Population-Percentage-18-24">Is Below Average Population Percentage 18-24<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-18-24">&#182;</a></h1>
+<p>Again, we see weapons use as high coefficients in the model. However, the overall accuracy is lower than the model above that might indicate that this treatment is not as useful and indicative compared to the previous.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Population-Percentage-18-24">Is Below Average Population Percentage 18-24<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-18-24">&#182;</a></h1><p>We would expect for a youth treatment variable to not have significant influence on the type of crime.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -15206,26 +15237,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:56:53,407|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:53,423|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:56:53,495|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:56:53,496|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:53,522|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:53,537|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:56:53,567|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:56:53,576|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:56:53,580|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:56:53,589|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:56:53,593|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:56:53,594|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:56:53,596|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:56:53,612|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:56:53,628|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:56:53,629|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:46:53,379|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:53,394|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:46:53,461|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:46:53,462|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:53,486|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:53,499|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:46:53,503|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:46:53,512|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:46:53,541|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:46:53,548|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:46:53,553|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:46:53,554|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:46:53,557|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:46:53,571|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:46:53,587|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:46:53,588|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:03,876|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:47:06,830|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:03,878|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:47:06,831|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -15297,11 +15328,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:03,895|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:03,897|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:03,900|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:03,915|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:03,962|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:06,846|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:06,848|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:06,856|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:06,873|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:47:06,923|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -15330,7 +15361,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:04,111|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:07,121|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -15412,7 +15443,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:04,410|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:07,579|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -15473,7 +15504,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:04,539|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:07,756|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -15534,10 +15565,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:04,631|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:04,632|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:04,663|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7563659166920037
-[2021-04-07 13:57:04,664|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7563705463182898
+<pre>[2021-04-08 18:47:08,022|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:08,030|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:08,061|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7563659166920037
+[2021-04-08 18:47:08,062|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7563705463182898
 </pre>
 </div>
 </div>
@@ -15549,7 +15580,16 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Population-Percentage-25-64">Is Below Average Population Percentage 25-64<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-25-64">&#182;</a></h1>
+<p>This a very interesting finding going against our initial hypothesis. Control for the youth treatment seems to be one of the highest indicators of the crime description. It has the best overall train and test accuracy with close to 76%. It also interesting to see a split between Firearm and No Weapon indicators. After looking into this variable more, Baltimore seems to have a serious youth criminality issue. We will investigate this further in our report.</p>
+<p>Youth criminality has been dropping but there are racial disparities. Also, the article was wrote in 2019 and our data covers a much longer historical period.<br>
+<a href="https://www.washingtonpost.com/local/public-safety/youth-arrests-in-baltimore-down-55percent-but-report-finds-racial-disparities/2019/04/28/b11a649e-66d5-11e9-8985-4cf30147bdca_story.html">https://www.washingtonpost.com/local/public-safety/youth-arrests-in-baltimore-down-55percent-but-report-finds-racial-disparities/2019/04/28/b11a649e-66d5-11e9-8985-4cf30147bdca_story.html</a></p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Population-Percentage-25-64">Is Below Average Population Percentage 25-64<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-25-64">&#182;</a></h1><p>We would expect for a youth treatment variable to not have significant influence on the type of crime.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -15594,26 +15634,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:04,858|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:04,873|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:04,937|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:04,938|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:04,964|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:04,977|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:05,006|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:05,014|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:05,017|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:05,025|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:05,029|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:05,030|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:05,032|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:05,046|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:05,061|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:05,062|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:47:08,280|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:08,297|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:47:08,370|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:08,373|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:08,397|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:08,411|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:47:08,414|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:47:08,422|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:47:08,455|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:47:08,463|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:47:08,467|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:47:08,468|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:08,471|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:08,486|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:47:08,502|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:47:08,503|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:12,572|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:47:18,712|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:12,573|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:47:18,714|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -15685,11 +15725,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:12,591|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:12,593|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:12,596|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:12,614|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:12,654|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:18,731|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:18,733|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:18,743|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:18,759|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:47:18,813|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -15718,7 +15758,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:12,787|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:18,968|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -15800,7 +15840,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:13,106|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:19,360|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -15861,7 +15901,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:13,245|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:19,513|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -15922,10 +15962,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:13,337|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:13,338|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:13,363|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6281829583460018
-[2021-04-07 13:57:13,364|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6281805225653206
+<pre>[2021-04-08 18:47:19,619|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:19,620|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:19,648|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6281829583460018
+[2021-04-08 18:47:19,649|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6281805225653206
 </pre>
 </div>
 </div>
@@ -15937,7 +15977,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Population-Percentage-Over-65">Is Below Average Population Percentage Over 65<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-Over-65">&#182;</a></h1>
+<p>This is against our hypothesis again and still indicates violence in younger people. The coefficients for different weapons are even higher and positively significant here which supports our results for above.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Population-Percentage-Over-65">Is Below Average Population Percentage Over 65<a class="anchor-link" href="#Is-Below-Average-Population-Percentage-Over-65">&#182;</a></h1><p>We would expect for a youth treatment variable to not have significant influence on the type of crime.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -15982,26 +16029,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:13,551|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:13,568|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:13,675|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:13,676|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:13,716|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:13,730|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:13,762|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:13,770|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:13,774|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:13,783|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:13,787|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:13,788|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:13,791|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:13,807|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:13,824|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:13,825|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:47:19,864|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:19,880|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:47:19,956|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:19,958|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:19,982|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:20,001|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:47:20,006|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:47:20,015|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:47:20,047|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:47:20,056|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:47:20,059|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:47:20,062|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:20,065|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:20,082|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:47:20,101|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:47:20,102|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:26,181|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:47:35,725|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l2&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:26,182|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:47:35,726|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -16073,11 +16120,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:26,201|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:26,202|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:26,205|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:26,222|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:26,271|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:35,744|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:35,748|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:35,759|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:35,775|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:47:35,819|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -16106,7 +16153,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:26,412|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:35,974|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -16188,7 +16235,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:26,764|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:36,439|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -16249,7 +16296,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:26,899|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:36,595|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -16310,10 +16357,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:26,993|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:26,994|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:27,019|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.4998479781088477
-[2021-04-07 13:57:27,020|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.49985748218527315
+<pre>[2021-04-08 18:47:36,701|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:36,704|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:36,732|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.4998479781088477
+[2021-04-08 18:47:36,733|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.49985748218527315
 </pre>
 </div>
 </div>
@@ -16325,7 +16372,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Percentage-Asian">Is Below Average Percentage Asian<a class="anchor-link" href="#Is-Below-Average-Percentage-Asian">&#182;</a></h1>
+<p>The effects here are more negligable with lower accuracy and in line with our expectations.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Percentage-Asian">Is Below Average Percentage Asian<a class="anchor-link" href="#Is-Below-Average-Percentage-Asian">&#182;</a></h1><p>Race could possibly indicate type of crime when used as treatment. This is where we have to be even more careful to adjust for demographic bias.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -16370,26 +16424,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:27,208|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:27,222|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:27,289|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:27,290|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:27,315|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:27,329|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:27,360|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:27,369|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:27,372|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:27,381|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:27,385|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:27,386|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:27,390|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:27,404|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:27,422|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:27,423|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:47:36,944|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:36,958|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:47:37,030|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:37,031|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:37,053|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:37,068|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:47:37,072|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:47:37,079|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:47:37,115|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:47:37,122|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:47:37,126|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:47:37,128|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:37,130|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:37,144|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:47:37,163|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:47:37,164|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:37,565|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:47:47,921|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 10, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:37,567|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:47:47,922|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -16461,11 +16515,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:37,590|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:37,592|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:37,607|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:37,653|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:37,697|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:47,936|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:47,937|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:47,945|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:47,962|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:47:48,009|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -16494,7 +16548,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:37,866|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:48,178|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -16576,7 +16630,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:38,245|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:48,581|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -16637,7 +16691,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:38,406|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:48,722|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -16698,10 +16752,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:38,504|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:38,505|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:38,532|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7293582775919732
-[2021-04-07 13:57:38,533|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7293681710213776
+<pre>[2021-04-08 18:47:48,815|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:48,816|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:48,843|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7293582775919732
+[2021-04-08 18:47:48,845|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7293681710213776
 </pre>
 </div>
 </div>
@@ -16713,7 +16767,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Percentage-African-American">Is Below Average Percentage African American<a class="anchor-link" href="#Is-Below-Average-Percentage-African-American">&#182;</a></h1>
+<p>Indeed information on Asian racial information seems to have an impact on the model accuracy as well as different weapon indicators. A higher Asian percentage would indicate less use of weapons and vice versa.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Percentage-African-American">Is Below Average Percentage African American<a class="anchor-link" href="#Is-Below-Average-Percentage-African-American">&#182;</a></h1><p>Race could possibly indicate type of crime when used as treatment. This is where we have to be even more careful to adjust for demographic bias.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -16758,26 +16819,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:38,717|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:38,733|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:38,813|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:38,814|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:38,840|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:38,855|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:38,881|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:38,890|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:38,894|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:38,903|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:38,906|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:38,908|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:38,911|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:38,926|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:38,942|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:38,944|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:47:49,053|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:49,069|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:47:49,140|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:49,141|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:49,170|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:49,186|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:47:49,190|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:47:49,198|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:47:49,225|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:47:49,233|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:47:49,237|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:47:49,238|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:49,241|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:49,255|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:47:49,272|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:47:49,273|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:46,205|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:47:57,307|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l2&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:46,206|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:47:57,314|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -16849,11 +16910,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:46,220|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:46,220|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:46,223|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:46,236|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:46,286|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:57,330|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:57,331|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:57,340|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:57,355|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:47:57,411|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -16882,7 +16943,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:46,434|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:57,571|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -16964,7 +17025,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:46,769|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:57,947|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -17025,7 +17086,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:46,910|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:47:58,121|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -17086,10 +17147,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:47,045|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:47,047|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:47,085|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.38616885831559744
-[2021-04-07 13:57:47,087|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.38616627078384796
+<pre>[2021-04-08 18:47:58,229|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:58,231|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:58,259|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.38616885831559744
+[2021-04-08 18:47:58,260|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.38616627078384796
 </pre>
 </div>
 </div>
@@ -17098,6 +17159,12 @@ Clean data length 263121
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>African American information also has an impact on the model, but accuracy is not as accurate so results are not as conclusive. A higher percentage of population might indicate a higher use of firearms and can affect crime description. It's interesting to see that the features are different to other demographic indicators. Keeping in mind this bias is important when trying to predict type of crime.</p>
+
+</div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -17146,26 +17213,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:47,288|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:47,302|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:47,391|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:47,392|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:47,427|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:47,512|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:47,544|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:47,554|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:47,558|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:47,567|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:47,570|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:47,571|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:47,574|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:47,588|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:47,605|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:47,606|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:47:58,477|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:58,496|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:47:58,570|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:47:58,573|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:58,596|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:58,670|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:47:58,673|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:47:58,682|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:47:58,712|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:47:58,724|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:47:58,728|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:47:58,729|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:47:58,731|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:47:58,745|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:47:58,762|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:47:58,764|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:57:57,460|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:48:10,955|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 0.1, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:57:57,461|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:48:10,957|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -17237,11 +17304,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:57,474|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:57,477|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:57,481|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:57,499|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:57:57,541|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:10,970|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:10,971|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:10,980|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:11,001|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:48:11,045|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -17270,7 +17337,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:57,680|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:11,199|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -17352,7 +17419,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:57,998|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:11,541|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -17413,7 +17480,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:58,132|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:11,678|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -17474,10 +17541,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:57:58,224|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:58,225|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:58,253|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7256764974156279
-[2021-04-07 13:57:58,254|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7256817102137767
+<pre>[2021-04-08 18:48:11,775|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:11,776|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:11,803|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.7256764974156279
+[2021-04-08 18:48:11,804|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.7256817102137767
 </pre>
 </div>
 </div>
@@ -17489,7 +17556,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Percentage-White">Is Below Average Percentage White<a class="anchor-link" href="#Is-Below-Average-Percentage-White">&#182;</a></h1>
+<p>Indeed information on Hispanic racial information, similarly to Asian demographic, seems to have an impact on the model accuracy as well as different weapon indicators. A higher Hispanic percentage would indicate less use of weapons and vice versa.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Percentage-White">Is Below Average Percentage White<a class="anchor-link" href="#Is-Below-Average-Percentage-White">&#182;</a></h1><p>Race could possibly indicate type of crime when used as treatment. This is where we have to be even more careful to adjust for demographic bias.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -17534,26 +17608,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:57:58,441|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:58,455|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:57:58,525|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:57:58,526|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:58,553|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:58,567|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:57:58,594|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:57:58,603|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:57:58,606|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:57:58,616|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:57:58,620|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:57:58,621|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:57:58,623|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:57:58,638|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:57:58,655|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:57:58,657|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:48:11,991|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:12,005|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:48:12,070|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:12,072|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:12,094|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:12,107|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:48:12,111|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:48:12,119|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:48:12,148|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:48:12,157|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:48:12,161|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:48:12,162|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:12,165|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:12,178|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:48:12,193|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:48:12,195|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:58:07,029|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:48:21,160|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 10, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:58:07,031|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:48:21,161|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -17625,11 +17699,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:07,045|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:07,046|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:07,049|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:07,067|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:58:07,107|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:21,180|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:21,181|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:21,191|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:21,207|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:48:21,247|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -17658,7 +17732,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:07,253|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:21,388|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -17740,7 +17814,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:07,582|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:21,764|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -17801,7 +17875,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:07,718|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:21,930|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -17862,10 +17936,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:07,814|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:07,816|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:07,844|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.5733125570082092
-[2021-04-07 13:58:07,847|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.5733016627078384
+<pre>[2021-04-08 18:48:22,046|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:22,049|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:22,080|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.5733125570082092
+[2021-04-08 18:48:22,081|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.5733016627078384
 </pre>
 </div>
 </div>
@@ -17877,7 +17951,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Median-Price-Of-Homes-Sold">Is Below Average Median Price Of Homes Sold<a class="anchor-link" href="#Is-Below-Average-Median-Price-Of-Homes-Sold">&#182;</a></h1>
+<p>Results here as not as accurate and conclusive. It is harder to interpret and racial diversity might be a better indicator than this.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Median-Price-Of-Homes-Sold">Is Below Average Median Price Of Homes Sold<a class="anchor-link" href="#Is-Below-Average-Median-Price-Of-Homes-Sold">&#182;</a></h1><p>This should have a similar impact as median salary.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -17922,26 +18003,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:58:08,054|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:08,070|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:58:08,159|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:08,160|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:08,190|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:08,204|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:58:08,234|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:58:08,243|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:58:08,246|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:58:08,254|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:58:08,258|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:58:08,259|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:08,262|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:08,276|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:58:08,291|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:58:08,293|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:48:22,288|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:22,303|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:48:22,372|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:22,373|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:22,395|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:22,409|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:48:22,412|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:48:22,419|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:48:22,446|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:48:22,453|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:48:22,456|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:48:22,457|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:22,460|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:22,476|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:48:22,490|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:48:22,491|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:58:16,477|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:48:32,121|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 10, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l2&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:58:16,479|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:48:32,123|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -18013,11 +18094,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:16,494|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:16,495|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:16,500|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:16,514|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:58:16,550|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:32,137|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:32,140|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:32,148|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:32,167|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:48:32,203|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -18046,7 +18127,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:16,682|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:32,345|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -18128,7 +18209,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:17,014|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:32,680|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -18189,7 +18270,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:17,151|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:32,819|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -18250,10 +18331,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:17,251|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:17,252|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:17,277|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6350999543934327
-[2021-04-07 13:58:17,278|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6350973871733967
+<pre>[2021-04-08 18:48:32,921|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:32,923|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:32,970|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6350999543934327
+[2021-04-08 18:48:32,972|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6350973871733967
 </pre>
 </div>
 </div>
@@ -18265,7 +18346,19 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Decent overall accuracy but balanced across difference features making it hard to interpret.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Is-Below-Average-Racial-Diversity-Index">Is Below Average Racial Diversity Index<a class="anchor-link" href="#Is-Below-Average-Racial-Diversity-Index">&#182;</a></h1>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>This could have an influence on the type of crime.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -18310,26 +18403,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:58:17,473|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:17,487|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:58:17,570|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:17,571|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:17,597|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:17,612|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:58:17,639|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:58:17,647|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:58:17,651|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:58:17,660|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:58:17,664|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:58:17,665|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:17,668|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:17,683|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:58:17,700|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:58:17,701|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:48:33,180|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:33,194|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:48:33,259|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:33,261|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:33,286|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:33,302|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:48:33,307|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:48:33,314|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:48:33,340|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:48:33,348|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:48:33,351|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:48:33,352|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:33,354|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:33,367|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:48:33,380|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:48:33,381|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:58:26,340|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:48:43,218|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 10, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l2&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:58:26,341|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:48:43,220|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -18401,11 +18494,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:26,354|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:26,355|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:26,359|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:26,377|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:58:26,410|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:43,233|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:43,234|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:43,243|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:43,257|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:48:43,295|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -18434,7 +18527,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:26,563|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:43,472|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -18516,7 +18609,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:26,909|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:43,864|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -18577,7 +18670,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:27,046|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:44,006|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -18638,10 +18731,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:27,140|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:27,141|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:27,169|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.47431780176345395
-[2021-04-07 13:58:27,171|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.47431828978622326
+<pre>[2021-04-08 18:48:44,101|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:44,102|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:44,128|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.47431780176345395
+[2021-04-08 18:48:44,129|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.47431828978622326
 </pre>
 </div>
 </div>
@@ -18653,7 +18746,14 @@ Clean data length 263121
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Is-Below-Average-Number-Of-Households">Is Below Average Number Of Households<a class="anchor-link" href="#Is-Below-Average-Number-Of-Households">&#182;</a></h1>
+<p>The accuracy here is the lowest making it not very useful treatment. Might not be a good indicator to use.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Is-Below-Average-Number-Of-Households">Is Below Average Number Of Households<a class="anchor-link" href="#Is-Below-Average-Number-Of-Households">&#182;</a></h1><p>Number of households could have an impact if we can associate it with higher population density and urbanization.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -18698,26 +18798,26 @@ Clean data length 263121
 Clean data length 263121
 
 [Estimate propensity scores for Inverse Probability Weighting.]
-[2021-04-07 13:58:27,357|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:27,372|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
-[2021-04-07 13:58:27,445|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:27,446|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:27,473|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:27,488|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
-[2021-04-07 13:58:27,518|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
-[2021-04-07 13:58:27,527|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
-[2021-04-07 13:58:27,530|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
-[2021-04-07 13:58:27,539|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
-[2021-04-07 13:58:27,542|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
-[2021-04-07 13:58:27,543|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:27,546|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:27,563|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
-[2021-04-07 13:58:27,579|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
-[2021-04-07 13:58:27,580|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
+[2021-04-08 18:48:44,317|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;011_bundle_train_and_test_data&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:44,333|kedro.pipeline.node|INFO] Running node: bundle_train_and_test_data([args_raw,test_df,train_df]) -&gt; [df_00]
+[2021-04-08 18:48:44,416|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:44,417|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:44,442|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;121_prepare_args&#39;, &#39;131_treatment_fractions_&#39;, &#39;141_initialize_model&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:44,456|kedro.pipeline.node|INFO] Running node: impute_cols_features([args_raw,df_00]) -&gt; [args_intermediate]
+[2021-04-08 18:48:44,460|kedro.runner.sequential_runner|INFO] Completed 1 out of 3 tasks
+[2021-04-08 18:48:44,468|kedro.pipeline.node|INFO] Running node: treatment_fractions_([args_raw,df_00]) -&gt; [treatment_fractions]
+[2021-04-08 18:48:44,499|kedro.runner.sequential_runner|INFO] Completed 2 out of 3 tasks
+[2021-04-08 18:48:44,507|kedro.pipeline.node|INFO] Running node: schedule_propensity_scoring([args_intermediate,df_00]) -&gt; [args]
+[2021-04-08 18:48:44,513|kedro.runner.sequential_runner|INFO] Completed 3 out of 3 tasks
+[2021-04-08 18:48:44,514|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:44,516|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;211_fit_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:44,531|kedro.pipeline.node|INFO] Running node: fit_propensity([args,df_00]) -&gt; [propensity_model]
+[2021-04-08 18:48:44,547|causallift.nodes.estimate_propensity|INFO] ## Propensity scores will be estimated by logistic regression.
+[2021-04-08 18:48:44,548|causallift.nodes.estimate_propensity|INFO] ### Parameters for grid search of Logistic regression:
 {&#39;search_cv&#39;: &#39;sklearn.model_selection.GridSearchCV&#39;, &#39;estimator&#39;: &#39;sklearn.linear_model.LogisticRegression&#39;, &#39;scoring&#39;: None, &#39;cv&#39;: 3, &#39;return_train_score&#39;: False, &#39;n_jobs&#39;: -1, &#39;param_grid&#39;: {&#39;random_state&#39;: [0], &#39;C&#39;: [0.1, 1, 10], &#39;class_weight&#39;: [None], &#39;dual&#39;: [False], &#39;fit_intercept&#39;: [True], &#39;intercept_scaling&#39;: [1], &#39;max_iter&#39;: [100], &#39;multi_class&#39;: [&#39;ovr&#39;], &#39;n_jobs&#39;: [1], &#39;penalty&#39;: [&#39;l1&#39;, &#39;l2&#39;], &#39;solver&#39;: [&#39;liblinear&#39;], &#39;tol&#39;: [0.0001], &#39;warm_start&#39;: [False]}}
-[2021-04-07 13:58:37,053|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
+[2021-04-08 18:48:55,446|causallift.nodes.estimate_propensity|INFO] ### Best parameter for logistic regression:
 {&#39;C&#39;: 10, &#39;class_weight&#39;: None, &#39;dual&#39;: False, &#39;fit_intercept&#39;: True, &#39;intercept_scaling&#39;: 1, &#39;l1_ratio&#39;: None, &#39;max_iter&#39;: 100, &#39;multi_class&#39;: &#39;ovr&#39;, &#39;n_jobs&#39;: 1, &#39;penalty&#39;: &#39;l1&#39;, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;liblinear&#39;, &#39;tol&#39;: 0.0001, &#39;verbose&#39;: 0, &#39;warm_start&#39;: False}
-[2021-04-07 13:58:37,054|causallift.nodes.estimate_propensity|INFO] 
+[2021-04-08 18:48:55,447|causallift.nodes.estimate_propensity|INFO] 
 ## Coefficients of logistic regression:
 </pre>
 </div>
@@ -18789,11 +18889,11 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:37,067|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:37,068|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:37,072|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
-[2021-04-07 13:58:37,103|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
-[2021-04-07 13:58:37,138|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:55,461|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:55,462|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:55,472|causallift.context.flexible_context|INFO] Run pipeline (tags: [&#39;221_estimate_propensity&#39;], SequentialRunner, only_missing: False)
+[2021-04-08 18:48:55,490|kedro.pipeline.node|INFO] Running node: estimate_propensity([args,df_00,propensity_model]) -&gt; [df_01]
+[2021-04-08 18:48:55,527|causallift.nodes.estimate_propensity|INFO] 
 ### Histogram of propensity score for train and test data:
 </pre>
 </div>
@@ -18822,7 +18922,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:37,343|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:55,699|causallift.nodes.estimate_propensity|INFO] 
 ### Score Table for logistic regression to calculate propensity score:
 </pre>
 </div>
@@ -18904,7 +19004,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:37,680|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:56,045|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Train:
 </pre>
 </div>
@@ -18965,7 +19065,7 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:37,827|causallift.nodes.estimate_propensity|INFO] 
+<pre>[2021-04-08 18:48:56,184|causallift.nodes.estimate_propensity|INFO] 
 ### Confusion Matrix for Test:
 </pre>
 </div>
@@ -19026,10 +19126,10 @@ Clean data length 263121
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[2021-04-07 13:58:37,925|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
-[2021-04-07 13:58:37,927|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
-[2021-04-07 13:58:37,954|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6120828899361508
-[2021-04-07 13:58:37,955|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6120855106888361
+<pre>[2021-04-08 18:48:56,277|kedro.runner.sequential_runner|INFO] Completed 1 out of 1 tasks
+[2021-04-08 18:48:56,279|kedro.runner.sequential_runner|INFO] Pipeline execution completed successfully.
+[2021-04-08 18:48:56,304|causallift.causal_lift|INFO] ### Treatment fraction in train dataset: 0.6120828899361508
+[2021-04-08 18:48:56,305|causallift.causal_lift|INFO] ### Treatment fraction in test dataset: 0.6120855106888361
 </pre>
 </div>
 </div>
@@ -19038,6 +19138,12 @@ Clean data length 263121
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Not a very high accuracy, but some interesting results with a high impact on many weapon related features.</p>
+
+</div>
 </div>
 </body>
 
