@@ -2,36 +2,23 @@ pipeline {
   agent any
   stages {
     stage('Initialize') {
-      parallel {
-        stage('Initialize') {
-          steps {
-            echo 'Image built - run or push after'
-            sh '''sudo fuser -k 8501/tcp || true
+      steps {
+        echo 'Image built - run or push after'
+        sh '''sudo fuser -k 80/tcp || true
 '''
-          }
-        }
-
-        stage('Test') {
-          steps {
-            echo 'Running tests'
-            sh 'pwd'
-            sh 'pip install pytest'
-            sh 'pytest'
-          }
-        }
-
       }
     }
 
-    stage('Build') {
+    stage('Test & Build') {
       steps {
+        echo 'Build with Docker and run Pytest'
         sh 'docker build -t dzcm:latest .'
       }
     }
 
     stage('Run') {
       steps {
-        sh 'docker run -d -p 8501:8501 dzcm:latest'
+        sh 'docker run -d -p 80:80 dzcm:latest'
       }
     }
 

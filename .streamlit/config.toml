@@ -1,4 +1,10 @@
 # Below are all the sections and options you can have in ~/.streamlit/config.toml.
+[theme]
+primaryColor="#373d3f"
+backgroundColor="#f0f0f5"
+secondaryBackgroundColor="#e0e0ef"
+textColor="#373d3f"
+font="sans serif"
 
 [global]
 
@@ -66,7 +72,7 @@ runOnSave = false
 
 # The port where the server will listen for client and browser connections.
 # Default: 8501
-port = 80
+port = 8501
 
 # Enables support for Cross-Origin Request Sharing, for added security.
 # Default: true
@@ -81,7 +87,7 @@ enableWebsocketCompression = false
 
 # Internet address of the server server that the browser should connect to. Can be IP address or DNS name.
 # Default: 'localhost'
-serverAddress = "0.0.0.0"
+# serverAddress = "0.0.0.0"
 
 # Whether to send usage statistics to Streamlit.
 # Default: true
@@ -89,4 +95,4 @@ gatherUsageStats = false
 
 # Port that the browser should use to connect to the server when in liveSave mode.
 # Default: whatever value is set in server.port.
-serverPort = 80
+serverPort = 8501
