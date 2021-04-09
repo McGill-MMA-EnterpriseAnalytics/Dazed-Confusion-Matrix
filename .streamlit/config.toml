@@ -76,9 +76,9 @@ port = 8501
 
 # Enables support for Cross-Origin Request Sharing, for added security.
 # Default: true
-enableCORS = false
+enableCORS = true
 
-enableXsrfProtection=false
+enableXsrfProtection= true
 
 enableWebsocketCompression = false
 

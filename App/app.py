@@ -30,8 +30,9 @@ def main():
     # LOAD DATA
     ##################################################################################################################
     @st.cache(persist=True)
-    def load_data(path1, path2, path3, path4, path5, path6, path7):
+    def load_data(path0, path1, path2, path3, path4, path5, path6, path7):
         # Raw data
+        data_new = pd.read_csv(path0)
         data = pd.read_csv(path1)
         data['latitude'] = pd.to_numeric(data['Latitude'])
         data['longitude'] = pd.to_numeric(data['Longitude'])
@@ -58,12 +59,13 @@ def main():
         # Check minimal accuracy
 
 
-        return data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
+        return data_new, data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
 
 
-    df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
-                                                                             './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './MODEL.txt', './data/Score_metrics.csv')
+    df_new, df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/TRAIN_911_DEMO_MERGED_ENCODED.CSV', './data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
+                                                                             './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './911MODEL.txt', './data/Score_metrics.csv')
 
+    st.write(df_new.columns)
     ##################################################################################################################
 
     # PREDICT
@@ -84,7 +86,7 @@ def main():
     st.sidebar.markdown('**McGill MMA** - Enterprise Data Science & ML in Production II')
     st.sidebar.markdown('**GitHub:** https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix')
 
-    st.sidebar.header('Get Prediction')
+    st.sidebar.subheader('Original Features')
     nb_types = st.sidebar.selectbox(
         'Chose Neighborhood',
         df.Neighborhood.unique()
@@ -107,6 +109,54 @@ def main():
 
     hours = st.sidebar.slider('Hour To Look At', int(min(df.Hour.unique())), int(max(df.Hour.unique())))
     months = st.sidebar.slider('Month To Look At', int(min(df.Month.unique())), int(max(df.Month.unique())))
+
+    st.sidebar.subheader('911 Features')
+    call_desc = st.sidebar.selectbox(
+        'Call Description',
+        df_new.CallDescription.unique()
+    )
+    priority = st.sidebar.selectbox(
+        'Priority',
+        ('HIGH', 'MEDIUM', 'LOW', 'NON-EMERGENCY', 'OUT OF SERVICE', 'UNKNOWN')
+    )
+    holiday = st.sidebar.selectbox(
+        'Holiday',
+        df_new.Holiday.unique()
+    )
+    weekend = st.sidebar.selectbox(
+        'Weekend',
+        df_new.Weekend.unique()
+    )
+    crime_hour = st.sidebar.slider('Crime Hour', int(min(df_new.crime_hour.unique())), int(max(df_new.crime_hour.unique())))
+
+    st.sidebar.subheader('Average Of Demographic Features')
+    median_household_income = df_new.median_household_income.mean()
+    st.sidebar.write('Median House Income: {}'.format(round(median_household_income, 2)))
+    households_below_poverty = df_new.households_below_poverty.mean()
+    st.sidebar.write('Households below poverty: {}'.format(round(households_below_poverty, 2)))
+    perc18_24 = df_new.perc18_24.mean()
+    st.sidebar.write('Percentage 18-24: {}'.format(round(perc18_24, 2)))
+    perc25_64 = df_new.perc25_64.mean()
+    st.sidebar.write('Percentage 25-54: {}'.format(round(perc25_64, 2)))
+    perc65up = df_new.perc65up.mean()
+    st.sidebar.write('Percentage 65+: {}'.format(round(perc65up, 2)))
+    perc_asian = df_new.perc_asian.mean()
+    st.sidebar.write('Percentage Asian: {}'.format(round(perc_asian, 2)))
+    perc_aa = df_new.perc_aa.mean()
+    st.sidebar.write('Percentage African American: {}'.format(round(perc_aa, 2)))
+    perc_hisp = df_new.perc_hisp.mean()
+    st.sidebar.write('Percentage Hispanic: {}'.format(round(perc_hisp, 2)))
+    perc_white= df_new.perc_white.mean()
+    st.sidebar.write('Percentage White {}'.format(round(perc_white, 2)))
+    median_price_homes_sold = df_new.median_price_homes_sold.mean()
+    st.sidebar.write('Median Price Homes Sold {}'.format(round(median_price_homes_sold, 2)))
+    racial_diversity_index = df_new.racial_diversity_index.mean()
+    st.sidebar.write('Racial Diversity Index {}'.format(round(racial_diversity_index, 2)))
+    num_households = df_new.num_households.mean()
+    st.sidebar.write('Number Of Households {}'.format(round(num_households, 2)))
+    st.sidebar.write(
+        'Average demographic data per neighborhood only is used to reduce bias and cannot be taken as an input. Please note that despite this, predictions might still contain demographic biases'
+        'This has to be kept in mind when taking action based off a predicted description. Please look at the Causal Lift section to learn more.')
     st.sidebar.markdown('')
     st.sidebar.markdown('')
     st.sidebar.markdown('')
@@ -123,7 +173,7 @@ def main():
     c2 = st.checkbox("Show/Hide Historical Data", False)
     if c2:
           st.subheader("Rows")
-          st.write(df.head(10))
+          st.write(df_new.head(10))
 
 
     st.header('Model Information')
@@ -148,8 +198,12 @@ def main():
     # GET PREDICTION WITH INPUT
     ##################################################################################################################
     # Get prediction
-    column_names = ['Outside', 'Weapon_FIREARM', 'Weapon_HANDS', 'Weapon_KNIFE', 'Weapon_NONE',
-                    'Weapon_OTHER', 'Neighborhood', 'Premise', 'Month','Hour']
+    column_names = ['Holiday', 'Weekend', 'Neighborhood', 'Premise', 'CallDescription',
+                    'median_household_income', 'households_below_poverty', 'perc18_24', 'perc25_64', 'perc65up',
+                    'perc_asian', 'perc_aa', 'perc_hisp', 'perc_white', 'median_price_homes_sold', 'racial_diversity_index', 'num_households',
+                    'Outside', 'Weapon_FIREARM', 'Weapon_HANDS', 'Weapon_KNIFE', 'Weapon_NONE', 'Weapon_OTHER', 'Month','Hour',
+                    'Priority_HIGH', 'Priority_LOW', 'Priority_MEDIUM', 'Priority_NON-EMERGENCY', 'Priority_OUT OF SERVICE', 'Priority_UNKNOWN', 'crime_hour']
+
 
     # Encode outside
     outside = 0
@@ -169,10 +223,29 @@ def main():
     if weapon_types == 'OTHER':
         wp_other = 1
 
+    p_high, p_low, p_med, p_non_em, p_out_service, p_ukn = 0, 0, 0, 0, 0, 0
+    if priority == 'HIGH':
+        p_high = 1
+    if priority == 'MEDIUM':
+        p_med = 1
+    if priority == 'LOW':
+        p_low = 1
+    if priority == 'NON-EMERGENCY':
+        p_non_em = 1
+    if priority == 'OUT OF SERVICE':
+        p_ukn = 1
+    if priority == 'UNKNOWN':
+        p_ukn = 1
+
+
     neighborhood_enc = neighborhood_decoder[nb_types]
     premise_enc = premise_decoder[premise_types]
 
-    X = pd.DataFrame(data=[outside, wp_firearm, wp_hands, wp_knife, wp_none, wp_other, neighborhood_enc, premise_enc, months, hours])
+    X = pd.DataFrame(data=[holiday, weekend, neighborhood_enc, premise_enc, call_desc,
+                           median_household_income, households_below_poverty, perc18_24, perc25_64, perc65up, perc_asian,
+                           perc_aa, perc_hisp, perc_white, median_price_homes_sold, racial_diversity_index, num_households,
+                           outside, wp_firearm, wp_hands, wp_knife, wp_none, wp_other,
+                           months, hours, p_high, p_med, p_low, p_non_em, p_out_service, p_ukn, crime_hour])
 
     col3, col4,  = st.beta_columns(2)
 
@@ -185,15 +258,18 @@ def main():
 
     prediction_prob, prediction = predict_description(X.T, model_txt)
 
-    col4.subheader('Types Of Crimes')
+
     #print(description_decoder.values())
     prediction_prob_df = pd.DataFrame(columns=description_decoder.values(), data=np.round(prediction_prob, 2))
-    prediction_prob = prediction_prob_df.transpose()
-    prediction_prob.columns = ['Probability']
-    col4.write(prediction_prob)
-
+    prediction_prob = prediction_prob_df
+    # prediction_prob.columns = ['Probability']
+    st.write(prediction_prob)
+    st.subheader('Types Of Crimes')
     #st.text(prediction)
     st.text('Most likely crime type given the profile: {}'.format(description_decoder[prediction]))
+
+
+
     midpoint = [np.average(df['latitude']), np.average(df['longitude'])]
     st.header('Searching Map Based On Historical Data')
     st.map((df.query('(Location == @location_types) & (Month == @months) & (Weapon == @weapon_types) & (Hour == @hours) & (Premise == @premise_types)')[['latitude', 'longitude']]))
@@ -276,6 +352,8 @@ def main():
         expander_3 = st.beta_expander('Model Text Output')
         expander_3.text(model_txt)
     ##################################################################################################################
+
+    st.write('A subset of the training data has been used for demonstration purposed when predicting descriptions.')
 
 # AUTHENTICATION
 if session_state.password != 'dzcm21bdp':
