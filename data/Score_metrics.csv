@@ -1,5 +1,5 @@
-﻿Measure,Score
-F1,43.95
-Accuracy,40.40
-Recall,40.40
-Precision,51.56
+Measure,Initial Model Score,New Model Score
+F1,43.95,76.8
+Accuracy,40.4,77.2
+Recall,40.4,77.2
+Precision,51.56,78.5

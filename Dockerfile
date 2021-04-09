@@ -9,7 +9,7 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 
 # Clear port to run app
-EXPOSE 80
+EXPOSE 8501
 
 # Copy Streamlit conditions not needed anymore as there are found in App folder
 # RUN mkdir ~/.streamlit
