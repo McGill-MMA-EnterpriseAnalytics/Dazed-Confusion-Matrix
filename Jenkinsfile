@@ -11,6 +11,7 @@ pipeline {
 
     stage('Test & Build') {
       steps {
+        echo 'Build with Docker and run Pytest'
         sh 'docker build -t dzcm:latest .'
       }
     }
