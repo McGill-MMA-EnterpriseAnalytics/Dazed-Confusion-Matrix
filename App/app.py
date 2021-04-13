@@ -1,20 +1,21 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
+st.set_page_config(layout="wide")
 import matplotlib.pyplot as plt
 import pydeck as pdk
 import lightgbm as lgb
 from SessionState import get
 
 import os.path as path
+
+st.title('Dazed Confusion Matrix App')
 two_up = path.abspath(path.join(__file__ ,"../.."))
 
 # Initialize empty session
 session_state = get(password='')
 
 def main():
-    st.title('Dazed Confusion Matrix App')
-
     # ADMIN MODE
     ##################################################################################################################
     admin = False
@@ -30,7 +31,7 @@ def main():
     # LOAD DATA
     ##################################################################################################################
     @st.cache(persist=True)
-    def load_data(path0, path1, path2, path3, path4, path5, path6, path7):
+    def load_data(path0, path1, path2, path3, path4, path5, path6, path7, path8):
         # Raw data
         data_new = pd.read_csv(path0)
         data = pd.read_csv(path1)
@@ -48,22 +49,22 @@ def main():
 
         # Accuracy
         model_metrics = pd.read_csv(path7, dtype={'Measure': 'str', 'Score': 'float'})
-        # model_metrics = pd.DataFrame(data=[['F1', 43.95], ['Accuracy', 40.40], ['Recall', 40.40], ['Precision', 51.56]] , columns=['Measure', 'Score'])
 
         # Decoders/Encoders
         description_decoder = pd.read_csv(path2, names=['value', 'key']).set_index('key')['value'].to_dict()
         district_decoder = pd.read_csv(path3, names=['key', 'value']).set_index('key')['value'].to_dict()
         neighborhood_decoder = pd.read_csv(path4, names=['key', 'value']).set_index('key')['value'].to_dict()
         premise_decoder = pd.read_csv(path5, names=['key', 'value']).set_index('key')['value'].to_dict()
-
+        call_desc = pd.read_csv(path8, names=['key', 'value'])
+        call_desc_decoder = call_desc.set_index('key')['value'].to_dict()
         # Check minimal accuracy
 
 
-        return data_new, data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder
+        return data_new, data, data_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder, call_desc, call_desc_decoder
 
 
-    df_new, df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder = load_data('./data/TRAIN_911_DEMO_MERGED_ENCODED.CSV', './data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
-                                                                             './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './911MODEL.txt', './data/Score_metrics.csv')
+    df_new, df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder, call_desc, call_desc_decoder = load_data('./data/TRAIN_911_DEMO_MERGED_ENCODED.CSV', './data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
+                                                                             './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './911MODEL.txt', './data/Score_metrics.csv', './data/911_Call_Description_decoder.csv')
 
     st.write(df_new.columns)
     ##################################################################################################################
@@ -77,7 +78,6 @@ def main():
         print(prediction)
         return prediction_prob, prediction
     ##################################################################################################################
-
 
     # SIDEBAR
     ##################################################################################################################
@@ -113,19 +113,20 @@ def main():
     st.sidebar.subheader('911 Features')
     call_desc = st.sidebar.selectbox(
         'Call Description',
-        df_new.CallDescription.unique()
+        call_desc
     )
+    call_desc_decoded = call_desc_decoder[call_desc]
     priority = st.sidebar.selectbox(
         'Priority',
         ('HIGH', 'MEDIUM', 'LOW', 'NON-EMERGENCY', 'OUT OF SERVICE', 'UNKNOWN')
     )
     holiday = st.sidebar.selectbox(
         'Holiday',
-        df_new.Holiday.unique()
+        ('YES', 'NO')
     )
     weekend = st.sidebar.selectbox(
         'Weekend',
-        df_new.Weekend.unique()
+        ('YES', 'NO')
     )
     crime_hour = st.sidebar.slider('Crime Hour', int(min(df_new.crime_hour.unique())), int(max(df_new.crime_hour.unique())))
 
@@ -237,11 +238,19 @@ def main():
     if priority == 'UNKNOWN':
         p_ukn = 1
 
+    holiday_bn = 0
+    if holiday == 'YES':
+        holiday_bn = 1
+
+    weekend_bn = 0
+    if weekend == 'YES':
+        weekend_bn = 1
+
 
     neighborhood_enc = neighborhood_decoder[nb_types]
     premise_enc = premise_decoder[premise_types]
 
-    X = pd.DataFrame(data=[holiday, weekend, neighborhood_enc, premise_enc, call_desc,
+    X = pd.DataFrame(data=[holiday_bn, weekend_bn, neighborhood_enc, premise_enc, call_desc_decoded,
                            median_household_income, households_below_poverty, perc18_24, perc25_64, perc65up, perc_asian,
                            perc_aa, perc_hisp, perc_white, median_price_homes_sold, racial_diversity_index, num_households,
                            outside, wp_firearm, wp_hands, wp_knife, wp_none, wp_other,
@@ -263,6 +272,9 @@ def main():
     prediction_prob_df = pd.DataFrame(columns=description_decoder.values(), data=np.round(prediction_prob, 2))
     prediction_prob = prediction_prob_df
     # prediction_prob.columns = ['Probability']
+    # prediction_prob['Probability'] = None]
+    prediction_prob['Index'] = 'Probability'
+    prediction_prob.set_index(['Index'], inplace=True)
     st.write(prediction_prob)
     st.subheader('Types Of Crimes')
     #st.text(prediction)
@@ -336,32 +348,20 @@ def main():
         ])
     )
 
-    expander_2 = st.beta_expander('Data Exploration Plots')
-    expander_2.subheader('Crimes By Neighborhood')
-    expander_2.image('./images/map2.png')
-
-    #fig = plt.figure()
-    #ax = fig.add_subplot(1, 1, 1)
-    #ax.scatter(x=df['longitude'], y=df['latitude'], alpha=0.3,
-    #            c=df['Count_By_Neighborhood'], cmap=plt.get_cmap('jet')
-
-    expander_2.subheader('Total Incidents By Weapon')
-    expander_2.image('./images/cat_plot2.png')
-
     if admin:
-        expander_3 = st.beta_expander('Model Text Output')
-        expander_3.text(model_txt)
+        expander_2 = st.beta_expander('Model Text Output')
+        expander_2.text(model_txt)
     ##################################################################################################################
 
     st.write('A subset of the training data has been used for demonstration purposed when predicting descriptions.')
 
 # AUTHENTICATION
-if session_state.password != 'dzcm21bdp':
+if session_state.password != 'dzcm21bpd':
     st.text('Please enter the administrator password')
     pwd_placeholder = st.empty()
     pwd = pwd_placeholder.text_input("Password:", value="", type="password")
     session_state.password = pwd
-    if session_state.password == 'dzcm21bdp':
+    if session_state.password == 'dzcm21bpd':
         pwd_placeholder.empty()
         main()
     else:
