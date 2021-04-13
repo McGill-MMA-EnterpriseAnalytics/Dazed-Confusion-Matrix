@@ -1,6 +1,6 @@
 # Below are all the sections and options you can have in ~/.streamlit/config.toml.
 [theme]
-primaryColor="#373d3f"
+primaryColor="#9191e3"
 backgroundColor="#f0f0f5"
 secondaryBackgroundColor="#e0e0ef"
 textColor="#373d3f"
@@ -96,3 +96,5 @@ gatherUsageStats = false
 # Port that the browser should use to connect to the server when in liveSave mode.
 # Default: whatever value is set in server.port.
 serverPort = 8501
+
+
