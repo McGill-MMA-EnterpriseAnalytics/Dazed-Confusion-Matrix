@@ -156,7 +156,7 @@ The practical situation is the situation under which this project was built, acc
 >
 
 ### Data Augmentation - Demographic Data
->- In the second part of the project, we wanted to add to our dataset to make better predictions, and also understand the inherent bias of our model. Because our model is based on past data, and includes neighborhood as a predictor, it is very possible that the model would be biased towards neighborhoods with certain characteristics. Therefore, we decided to gather the following variables for each neighborhood in each year in our original dataset:
+>- In the second part of the project, we wanted to add to our dataset to make better predictions, and also understand the inherent bias of our model. Because our model is based on past data, and includes neighborhood as a predictor, it is very possible that the model would be biased towards neighborhoods with certain characteristics. Therefore, we decided to gather the following variables for each neighborhood in each year in our original dataset: \
 	- Median household income \
 	- Median price of homes sold \
 	- Percent of family households living below the poverty line \
@@ -169,6 +169,9 @@ The practical situation is the situation under which this project was built, acc
 	- Percent of White residents \
 	- Racial diversity index \
 	- Total number of households \
+
+>- Baltimore collects this data by what they call a Community Statistical Area (CSA). Each CSA is composed of a few neighborhoods, and often times it is hard to determinne which CSA a neighborhood belongs to solely based off name. Therefore, we had to manually match each neighborhood to its corresponding CSA. The matching file can be found here: _[neighborhoods.csv](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/data/neighborhoods.csv)_
+>
 
 
 
