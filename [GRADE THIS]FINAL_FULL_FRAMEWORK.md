@@ -238,19 +238,25 @@ The model simply classifies everything as common assault and calls it a day. But
 
 ### 911 Calls Augmentation Model
 
+Before doing any modeling with this data, it had to be very painfully cleaned. After applying all of the transformations from the previously-mentioned _[text file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Data_transformations.txt)_, we noticed that the CallDescription variable was riddled with spelling mistakes. I was particularly astounded at the different ways of mispelling "CHECK WELL BEING". The entire cleaning, model tuning, and test set validation is located in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/911_model_tuning_and_EVERYTHING.ipynb)_. 
+
+The training 5-fold CV F1 score was 0.5731, achieved again using hyperopt and mlflow. The feature importance plot is rather telling as to why this score is so much better than before:
+
+![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/feature_importance.png)
 
 
 
 ## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
-	SOTA Supervised Learning SECTION
+
+Don't need this section. Covered in 5.
 
 ## _[7. Model Selection](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Don't need this section. Covered in 5 and 6.
+Don't need this section. Covered in 5.
 
 ## _[8. Model Fine-Tuning](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Don't need this section. Covered in 5 and 6.
+Don't need this section. Covered in 5.
 
 ## _[9. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - 	Document what you have done
