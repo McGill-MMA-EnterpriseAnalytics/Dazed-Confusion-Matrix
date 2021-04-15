@@ -152,7 +152,7 @@ The practical situation is the situation under which this project was built, acc
 >- Determined once the data is retrieved. Should be somewhat similar to the *PRACTICAL SITUATION* data type below. 
 
 ###### __PRACTICAL SITUATION__
->- It is 39.27 MB in size and the data can be considered time series and geogrpahical, as the crime is divided by area and is occurring with the passing of time.
+>- It is 39.27 MB in size and the data can be considered time series and geographical, as the crime is divided by area and is occurring with the passing of time.
 >
 
 ### Data Augmentation - Demographic Data
@@ -198,18 +198,22 @@ One of the main issues with the demographic data was that there was a ton of mis
 - 	Document what you have learned
 
 ## _[4. Data Preparation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Cleaning)_
-- 	Dealing with missing data
-- 	Cleaning data
-- 	Outlier detection
-- 	Data preprocessing
-- 	Feature selection
-- 	Feature engineering
-- 	Feature Scaling
-- 	Clustering
-- Can be utilized to group outliers against the main data points
-- It can be leveraged to come up with most relevant instances to use for training, validation, and testing
-- Obviously it can be used for unsupervised learning
-- Dealing with imbalanced data
+
+### Data Re-cleaning
+
+After attempting to train some new models with augmented demographic data, it was noticed that many categories in the "Premise" feature could be recategorized together, greatly reducing the number of categories, especially those with very few records. For example, "APT/CONDO" and "APT. LOCKE" were simplying merged into a single "APARTMENT" category. This _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Recleaning.ipynb)_ contains all of the changes, while this _[text file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Data_transformations.txt)_ contains a record of all the modifications that were made for future iterations of this cleaning.
+
+### Weekend and Holidays
+
+Two features were added to the original data, binary variables denoting if a crime occurred on a weekend, and if it occurred on a holiday. The same _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Recleaning.ipynb)_ as above contains the modifications, beginning at cell 106, and this code was again stored in the _[text file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Data_transformations.txt)_ for easier access, should this transformation need to be done on other data.
+
+### Test Data Re-cleaning
+
+One glaring issue was made apparent with the test data. Because we procured this data directly from the Baltimore PD website, it was in a slightly different format than the training data we had procured from kaggle. Apart from the transformations that we did already for the first part of the course, it was noticed that many of the fields in the test data were complete phrases/words, while our training data had many of them truncated. For example, the training data had a premise listed as "SINGLE HOU", while the test data listed it as "SINGLE HOUSE". This was the reason for the original mismatches in the label encoder that we faced in the first course, and these were all painfully changed manually one by one. To see the extent of what had to be done, please see this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/V2_test_data_cleaning.ipynb)_. 
+
+### Missing Data
+
+Unlike the original data where it was a bit questionable to impute features such as the premise of a crime, this was not the case with the demographic data. The demographic features are much more reliant on other features present in the original dataset such as the district, as well as longitude and latitude. The _[miceforest](https://github.com/AnotherSamWilson/miceforest)_ package was used to impute the missing demographic data after it was merged with the original dataset. Miceforest uses employs Multiple Imputation by Chained Equations, filling in missing data through an iterative series of models, in this case random forests. It uses something called predictive mean matching, where N original values closest to the predicted missing sample are chosen as candidates, from which a value is chosen at random. In this way the missing demographic data was filled in. The issue with imputing demographic data in this fashion is that it is measured by a constant by neighborhood, whereas the imputation is continuous. To account for this, the mean of the imputed values was calculated per neighborhood to mimic a neighborhood level imputation. This imputation model was then saved to be used on the test data. Though this model is far too large to store on github, the imputation process can be seen in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Demographic_imputation_MICE.ipynb)_. 
 
 ## _[5. Modeling](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 - 	Train many quick and dirty models from different categories (e.g.,linear, naïve Bayes, SVM, Random Forests, neural net, etc.) using standard parameters
