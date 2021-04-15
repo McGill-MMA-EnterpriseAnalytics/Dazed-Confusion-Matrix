@@ -250,7 +250,7 @@ This makes a lot of sense. If a potential crime is matched to a 911 call, that c
 
 The shap package was used to glean further insight from this 911-augmented model. The most easy-to-interpret output is the summary plot below:
 
-![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/SHAP_values_911.png =1000x)
+![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/SHAP_values_911.png | width=1000)
 
 Even though the call description is the most important in the feature importance plot, it is actually dwarfed by the Weapon_NONE category, and this makes a lot of sense. If you look at the classes effected by it, those correspond to crimes like larceny and auto theft, which by nature don't use a weapon, and robbery and shooting, which by definition do. Another value of interest is common assault, the red category, and you'll notice that Weapon_HANDS is almost entirely red. For reference, the corresponding categories of crimes are listed below:
 
