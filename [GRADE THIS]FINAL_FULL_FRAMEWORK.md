@@ -244,7 +244,31 @@ The training 5-fold CV F1 score was 0.5731, achieved again using hyperopt and ml
 
 ![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/feature_importance.png)
 
+This makes a lot of sense. If a potential crime is matched to a 911 call, that call will contain very valuable information to infer its nature. The performance of this model on the test data is very good: an F1 score of 0.76795. Keep in mind that this test data is from a stratified split from the 2015 data we were able to match, which could be the cause of its spectacular performance. Nevertheless, the train score for this model is the best out of all the models we tested. 
 
+### Explainability
+
+The shap package was used to glean further insight from this 911-augmented model. The most easy-to-interpret output is the summary plot below:
+
+![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/SHAP_values_911.png)
+
+Even though the call description is the most important in the feature importance plot, it is actually dwarfed by the Weapon_NONE category, and this makes a lot of sense. If you look at the classes effected by it, those correspond to crimes like larceny and auto theft, which by nature don't use a weapon, and robbery and shooting, which by definition do. Another value of interest is common assault, the red category, and you'll notice that Weapon_HANDS is almost entirely red. For reference, the 
+
+AGG. ASSAULT: 0
+ARSON: 1
+ASSAULT BY THREAT: 2
+AUTO THEFT: 3
+BURGLARY: 4
+COMMON ASSAULT: 5
+HOMICIDE: 6
+LARCENY: 7
+LARCENY FROM AUTO: 8
+ROBBERY - CARJACKING: 9
+ROBBERY - COMMERCIAL: 10
+ROBBERY - RESIDENCE: 11
+ROBBERY - STREET: 12
+SEXUAL ASSAULT: 13
+SHOOTING: 14
 
 ## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
