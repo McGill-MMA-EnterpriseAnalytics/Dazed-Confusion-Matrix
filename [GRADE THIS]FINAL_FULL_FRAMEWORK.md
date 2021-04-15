@@ -224,19 +224,16 @@ The test data was imputed using the same miceforest model as for the train data.
 
 Once the original data had been re-cleaned with the premises grouped properly and variables for weekends and holidays introduced, we optimized a lightGBM model to see if these changes improved the predicitions. We now had the benefit of libraries such as hyperopt and mlflow, allowing for a more "intelligent" gridsearch, and a clear way to keep track of the hundreds of runs that we did for this and subsequent training tasks. To access these model logs, import mlflow in the python console, and then in the terminal type "mlflow ui". Be sure that the terminal is in the Model_Development folder directory as that is where the mlruns folder is located. This should prompt you to open the mlflow ui on a local address, most likely http://127.0.0.1:5000/#/. To our disappointment, the 5-fold CV F1 score did not improve. In fact, it was slightly worse: 0.39467. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/New_model_tuning_with_MLflow_and_Hyperopt.ipynb)_ for details of the process, along with pictures of the mlflow plots indicating optimal hyperparameter ranges for subsequent runs. 
 
+This new model did perform better on the test data, however. The F1 score was 0.512, much better than our original 0.439. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/V2_Final_model_w_weekend_holidays.ipynb)_ for more detailed test scores and for a feature importance plot. The importance of the features did not change very much from our first model, but the weekend variable provided some benefit, while the holiday variable not so much. Removing any variables from this model significantly reduced training scores, so all of the features were kept.
+
 ### Demographic Augmentation Model
 
-One of the main goals of continuing this project was to improve the original lightGBM model with the augmented data. The first completely new model that we trained was on the original data augmented only with the demographic data. 
+One of the main goals of continuing this project was to improve the original lightGBM model with the augmented data. The first completely new model that we trained was on the original data augmented only with the demographic data. This new model was ahain developed using hyperopt and mlflow, and the process is documented in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/New_model_with_imputed_demo.ipynb)_. The optimal F1 5-fold CV score was worse, at 0.391, but we did notice that the "Premise" feature surged in importance. 
 
+This _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Test_data_performance_demo_model.ipynb)_ details this model's performance on the test data, which is hilariously terrible, with very low accuracy and recall, but a precision score that is as high as it is silly. Looking at the confusion matrix, the horrible result is explained:
 
+![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/Confusion_demo.png)
 
-We started first with just the demographic data, and 
-after imputing it, we tuned a new lightGBM model using hyperopt to tune the hyperparameters, and MLflow to keep track of the runs. Our F1 score was not better on the 
-training data. It does bear mentioning that we cleaned the training data further, grouping together some categories for the premises that were essentially saying the
-same thing but in different words.
-For the test data, we had to spend a significant amount of time recleaning it. After some sleuthing, we noticed that many of the categories we had originally thought
-were missing, were actually formatted differently. Some were in all caps, while some had been cut off in the training data, and so on. 
-So we had to VERY painfully clean the test data. Once this was done, the imputed model from the train data was used to impute the missing demographic test data, 
 and we checked the performance of the model with hilariously terrible results. If you look at the confusion matrix, you can kind of see why that is. 
 The model simply classifies everything as common assault and calls it a day. But come on, it can't be that common! So we went on to 
 further augment the data with the 911 calls.
