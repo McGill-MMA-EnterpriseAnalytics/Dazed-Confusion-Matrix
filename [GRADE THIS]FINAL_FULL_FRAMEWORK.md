@@ -157,18 +157,18 @@ The practical situation is the situation under which this project was built, acc
 
 ### Data Augmentation - Demographic Data
 >- In the second part of the project, we wanted to add to our dataset to make better predictions, and also understand the inherent bias of our model. Because our model is based on past data, and includes neighborhood as a predictor, it is very possible that the model would be biased towards neighborhoods with certain characteristics. Therefore, we decided to gather the following variables for each neighborhood in each year in our original dataset:
-	- Median household income
-	- Median price of homes sold
-	- Percent of family households living below the poverty line
-	- Percent of population 18-24
-	- Percent of population 25-64
-	- Percent of population 65+
-	- Percent of Asian residents
-	- Percent of African-American residents
-	- Percent of Hispanic residents
-	- Percent of White residents
-	- Racial diversity index
-	- Total number of households
+	- Median household income \
+	- Median price of homes sold \
+	- Percent of family households living below the poverty line \
+	- Percent of population 18-24 \
+	- Percent of population 25-64 \
+	- Percent of population 65+ \
+	- Percent of Asian residents \
+	- Percent of African-American residents \
+	- Percent of Hispanic residents \
+	- Percent of White residents \
+	- Racial diversity index \
+	- Total number of households \
 
 
 
