@@ -234,9 +234,10 @@ This _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusi
 
 ![image](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/images/Confusion_demo.png)
 
-and we checked the performance of the model with hilariously terrible results. If you look at the confusion matrix, you can kind of see why that is. 
-The model simply classifies everything as common assault and calls it a day. But come on, it can't be that common! So we went on to 
-further augment the data with the 911 calls.
+The model simply classifies everything as common assault and calls it a day. But come on, it can't be that common! So we went on to further augment the data with the 911 calls.
+
+### 911 Calls Augmentation Model
+
 
 
 
