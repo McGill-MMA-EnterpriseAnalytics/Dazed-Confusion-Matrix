@@ -205,7 +205,7 @@ After attempting to train some new models with augmented demographic data, it wa
 
 ### Weekend and Holidays
 
-Two features were added to the original data, binary variables denoting if a crime occurred on a weekend, and if it occurred on a holiday. The same _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Recleaning.ipynb)_ as above contains the modifications, beginning at cell 106, and this code was again stored in the _[text file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Data_transformations.txt)_ for easier access, should this transformation need to be done on other data.
+Two features were added to the original data: binary variables denoting if a crime occurred on a weekend, and if it occurred on a holiday. The same _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Recleaning.ipynb)_ as above contains the modifications, beginning at cell 106, and this code was again stored in the _[text file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Data_transformations.txt)_ for easier access, should this transformation need to be done on other data.
 
 ### Test Data Re-cleaning
 
@@ -213,36 +213,46 @@ One glaring issue was made apparent with the test data. Because we procured this
 
 ### Missing Data
 
-Unlike the original data where it was a bit questionable to impute features such as the premise of a crime, this was not the case with the demographic data. The demographic features are much more reliant on other features present in the original dataset such as the district, as well as longitude and latitude. The _[miceforest](https://github.com/AnotherSamWilson/miceforest)_ package was used to impute the missing demographic data after it was merged with the original dataset. Miceforest uses employs Multiple Imputation by Chained Equations, filling in missing data through an iterative series of models, in this case random forests. It uses something called predictive mean matching, where N original values closest to the predicted missing sample are chosen as candidates, from which a value is chosen at random. In this way the missing demographic data was filled in. The issue with imputing demographic data in this fashion is that it is measured by a constant by neighborhood, whereas the imputation is continuous. To account for this, the mean of the imputed values was calculated per neighborhood to mimic a neighborhood level imputation. This imputation model was then saved to be used on the test data. Though this model is far too large to store on github, the imputation process can be seen in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Demographic_imputation_MICE.ipynb)_. 
+Unlike the original data where it was a bit questionable to impute features such as the premise of a crime, this was not the case with the demographic data. The demographic features are much more reliant on other features present in the original dataset such as the district, as well as longitude and latitude. The _[miceforest](https://github.com/AnotherSamWilson/miceforest)_ package was used to impute the missing demographic data after it was merged with the original dataset. Miceforest uses employs Multiple Imputation by Chained Equations, filling in missing data through an iterative series of models, in this case random forests. It uses something called predictive mean matching, where N original values closest to the predicted missing sample are chosen as candidates, from which a value is chosen at random. In this way the missing demographic data was filled in. The issue with imputing demographic data in this fashion is that it is measured by a constant by neighborhood, whereas the imputation is continuous. To account for this, the mean of the imputed values was calculated per neighborhood to mimic a neighborhood-level imputation. This imputation model was then saved to be used on the test data. Though this model is far too large to store on github, the imputation process can be seen in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Demographic_imputation_MICE.ipynb)_. 
+
+The test data was imputed using the same miceforest model as for the train data. The neighborhood-level imputation was done similarly, taking the mean of the imputed values by neighborhood. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Impute_test_data_demographics.ipynb)_ for details. 
+
 
 ## _[5. Modeling](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
-- 	Train many quick and dirty models from different categories (e.g.,linear, naïve Bayes, SVM, Random Forests, neural net, etc.) using standard parameters
-- 	Measure and compare performance:
-- For each model, use N-fold cross-validation and compute the mean and standard deviation of the performance measure on the N folds.
-- 	Analyze the most significant variables for each algorithm
-- 	Analyse the types of errors the models make
--  What data would a human have used to avoid these errors?
-- 	Have a quick round of feature selection and engineering
-- 	Have one or two more quick iterations of the five previous steps.
-- 	Short-list the top three to five most promising models, preferring models that make different types of errors.
+
+### Base Model With Newly-Cleaned Data
+
+Once the original data had been re-cleaned with the premises grouped properly and variables for weekends and holidays introduced, we optimized a lightGBM model to see if these changes improved the predicitions. We now had the benefit of libraries such as hyperopt and mlflow, allowing for a more "intelligent" gridsearch, and a clear way to keep track of the hundreds of runs that we did for this and subsequent training tasks. To access these model logs, import mlflow in the python console, and then in the terminal type "mlflow ui". Be sure that the terminal is in the Model_Development folder directory as that is where the mlruns folder is located. This should prompt you to open the mlflow ui on a local address, most likely http://127.0.0.1:5000/#/. To our disappointment, the 5-fold CV F1 score did not improve. In fact, it was slightly worse: 0.39467. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/New_model_tuning_with_MLflow_and_Hyperopt.ipynb)_ for details of the process, along with pictures of the mlflow plots indicating optimal hyperparameter ranges for subsequent runs. 
+
+### Demographic Augmentation Model
+
+One of the main goals of continuing this project was to improve the original lightGBM model with the augmented data. The first completely new model that we trained was on the original data augmented only with the demographic data. 
+
+
+
+We started first with just the demographic data, and 
+after imputing it, we tuned a new lightGBM model using hyperopt to tune the hyperparameters, and MLflow to keep track of the runs. Our F1 score was not better on the 
+training data. It does bear mentioning that we cleaned the training data further, grouping together some categories for the premises that were essentially saying the
+same thing but in different words.
+For the test data, we had to spend a significant amount of time recleaning it. After some sleuthing, we noticed that many of the categories we had originally thought
+were missing, were actually formatted differently. Some were in all caps, while some had been cut off in the training data, and so on. 
+So we had to VERY painfully clean the test data. Once this was done, the imputed model from the train data was used to impute the missing demographic test data, 
+and we checked the performance of the model with hilariously terrible results. If you look at the confusion matrix, you can kind of see why that is. 
+The model simply classifies everything as common assault and calls it a day. But come on, it can't be that common! So we went on to 
+further augment the data with the 911 calls.
+
+
 
 ## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 	SOTA Supervised Learning SECTION
 
 ## _[7. Model Selection](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-- 	Evaluation metrics
-- 	Simplicity
-- 	Explainability and interpretability
-- 	Offline vs. online
-- 	Batch vs. Real-time
--
+Don't need this section. Covered in 5 and 6.
+
 ## _[8. Model Fine-Tuning](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
-- 	Fine-tune the hyperparameters using cross-validation
-- Treat your data transformation choices as hyperparameters, especially when you are not sure about them (e.g., should I replace missing values with zero or with the median value? Or just drop the rows?)
-- Unless there are very few hyperparameter values to explore, prefer random search over grid search. If training is very long, you may prefer a Bayesian optimization approach(e.g.,using Gaussian process priors, as described by Jasper Snoek, Hugo Larochelle, and Ryan Adams).
-- 	Try Ensemble methods. Combining your best models will often perform better than running them individually
-- 	Once you are confident about your final model, measure its performance on the test set to estimate the generalization error
+
+Don't need this section. Covered in 5 and 6.
 
 ## _[9. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - 	Document what you have done
