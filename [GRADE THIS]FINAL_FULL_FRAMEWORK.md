@@ -156,23 +156,24 @@ The practical situation is the situation under which this project was built, acc
 >
 
 ### Data Augmentation - Demographic Data
-In the second part of the project, we wanted to add to our dataset to make better predictions, and also understand the inherent bias of our model. Because our model is based on past data, and includes neighborhood as a predictor, it is very possible that the model would be biased towards neighborhoods with certain characteristics. Therefore, we decided to gather the following variables for each neighborhood in each year in our original dataset: \
-	- Median household income \
-	- Median price of homes sold \
-	- Percent of family households living below the poverty line \
-	- Percent of population 18-24 \
-	- Percent of population 25-64 \
-	- Percent of population 65+ \
-	- Percent of Asian residents \
-	- Percent of African-American residents \
-	- Percent of Hispanic residents \
-	- Percent of White residents \
-	- Racial diversity index \
-	- Total number of households \
+In the second part of the project, we wanted to add to our dataset to make better predictions, and also understand the inherent bias of our model. Because our model is based on past data, and includes neighborhood as a predictor, it is very possible that the model would be biased towards neighborhoods with certain characteristics. Therefore, we decided to gather the following variables for each neighborhood in each year in our original dataset: 
+- 	Median household income 
+-	Median price of homes sold 
+-	Percent of family households living below the poverty line 
+-	Percent of population 18-24 
+-	Percent of population 25-64 
+-	Percent of population 65+ 
+-	Percent of Asian residents 
+-	Percent of African-American residents 
+-	Percent of Hispanic residents 
+-	Percent of White residents 
+-	Racial diversity index 
+-	Total number of households 
 
 Baltimore collects this data by what they call a Community Statistical Area (CSA). Each CSA is composed of a few neighborhoods, and often times it is hard to determinne which CSA a neighborhood belongs to solely based off name. Therefore, we had to manually match each neighborhood to its corresponding CSA. The matching file can be found here: _[neighborhoods.csv](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/data/neighborhoods.csv)_
 
-
+#### Ethical AI - Merging the Data
+One of the main issues with the demographic data was that there was a ton of missing information. On one hand, there were some neighborhoods in our data that were not associated with a CSA. On the other hand, not all data was collected every year, so we had some years where we were missing all information. Imputing demographic data can come with its own ethical issues, because you don't want to improperly impute and thus mask or augment some of the bias in the model. Therefore, for the missing years, we imputed the data with the median value for the same CSA in the years we had the data for. The cleaning, matching, and merging of the demographic data for the training data can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/V2_Demographic_Data_Cleaning_Merging.ipynb)_. The same process was used for the test data and can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Test_data_demo_merging.ipynb)_.
 
 
 
