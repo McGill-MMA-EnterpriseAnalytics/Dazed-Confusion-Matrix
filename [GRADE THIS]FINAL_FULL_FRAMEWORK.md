@@ -152,7 +152,11 @@ The practical situation is the situation under which this project was built, acc
 >- Determined once the data is retrieved. Should be somewhat similar to the *PRACTICAL SITUATION* data type below. 
 
 ###### __PRACTICAL SITUATION__
->- It is 39.27 MB in size and the data can be considered time series and geogrpahical, as the crime is divided by area and is occurring with the passing of time. 
+>- It is 39.27 MB in size and the data can be considered time series and geogrpahical, as the crime is divided by area and is occurring with the passing of time.
+>
+
+### Data Augmentation - Demographic Data
+
 
 
 ## _[3. Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Visualization.ipynb)_
