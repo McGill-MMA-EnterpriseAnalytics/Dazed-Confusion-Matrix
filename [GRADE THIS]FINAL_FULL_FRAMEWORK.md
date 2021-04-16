@@ -292,7 +292,7 @@ The main notebook in this section is _[CausalResultsBinary.ipynb](https://github
 - All the results are detailed in the notebook and HTML files
 - The other files are more for experimentation
 
-Don't need this section. Covered in 5.
+
 
 ## _[10. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - 	Document what you have done
