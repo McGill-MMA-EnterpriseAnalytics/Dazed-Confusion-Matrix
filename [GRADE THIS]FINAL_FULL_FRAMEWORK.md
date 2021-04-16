@@ -284,7 +284,17 @@ Don't need this section. Covered in 5.
 
 Don't need this section. Covered in 5.
 
-## _[9. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
+## _[9. Causal Inference](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Causal)_
+This section is related to the Ethical AI part explained above as we try to understand the effect of demographic data on our model.   
+Our main code uses the Causal Lift package and can be found at _[CausalModel](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Causal/CausalModel.py)_  
+The main notebook in this section is _[CausalResultsBinary.ipynb](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Causal/CausalResultsBinary.ipynb)_  
+- It also has an associated HTML file with the same name
+- All the results are detailed in the notebook and HTML files
+- The other files are more for experimentation
+
+Don't need this section. Covered in 5.
+
+## _[10. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - 	Document what you have done
 - Context
 --   Context should present your understanding of the business problem
@@ -310,10 +320,42 @@ Don't need this section. Covered in 5.
 - 	Conclusion
 - 	[Lessons Learned and Next Steps](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Future_Work.md)
 
-## _[10. Launching, Monitoring and Maintenance](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
+## _[11. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/dev/App)_
+The main dashboard file is _[app.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/app.py)_. We use Streamlit for the front-end and you can run it from that directory using *streamlit run app.py*  
+The app uses _[SessionState.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/SessionState.py)_ to handle password authentication when first landing on the page  
+The main section of the dashboard can be broken down into a few parts:
+- load_data takes in different files paths and will get all the data necessary (it stores into cache for efficiency)
+- predict uses the _[911MODEL.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/911MODEL.txt)_ to run the predictions based on input data
+- The sidebar section consists of information about the team and taking user input
+- The model info displays some essential model metrics
+- In get predictions, we encode user input and run the model to output the predicted class and associated probabilities
+- The causal lift section displays demographic causal results
+- Other info displays a 3D map of baltimore with our initial data  
+In addition, the _[.streamlit](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/.streamlit)_ folder is used for all front-end configurations
+
+## _[12. Launching, Monitoring and Maintenance](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 - Get your solution ready for production (plug into production data inputs, write unit tests, etc.)
-- W- te monitoring code to check your system’s live performance at regular intervals and trigger alerts when it drops.
+- Monitoring code to check your system’s live performance at regular intervals and trigger alerts when it drops.
 - Beware of slow degradation too: models tend to “rot” as data evolves
 - Measuring performance may require a human pipeline (e.g. via a crowdsourcing service)
 - Also monitor your inputs’ quality (e.g., a malfunctioning sensor sending random values, or another team’s output becoming stale). This is particularly important for online learning systems
 - Retrain your models on a regular basis on fresh data
+
+Our main areas of focus have been on project deployment and testing.
+
+In terms of deployment we first focused on Docker.  
+- We have our _[Dockerfile](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Dockerfile)_ that builds the project and also runs Pytest
+- We have a _[dockerbuild.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/dockerbuild.txt))_ with steps to get requirements and pushing to Azure registry
+- We have _[requirements.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/dockerbuild.txt)_ for all the libraries used
+
+Our second deployment step focuses on Continuous Integration (CI) with Jenkins:
+- We have a server running on a Linux computer for Jenkins
+- We configured the _[Jenkinsfile](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Jenkinsfile)_ using the Jenkins Blue Ocean plugin
+- The Jenkins pipeline builds, tests, and then runs the Docker image  
+
+We also have a _[testing](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/dev/App/Testing)_ folder.
+- Tests are run with Pytest which is lightweight and easy to use
+- We have some basic tests as proof of concept for the dashboard inputs and model quality
+- Future users can build on these by adding more coverage or extend it to the entire code
+- These tests are automatically run in the Dockerfile
+
