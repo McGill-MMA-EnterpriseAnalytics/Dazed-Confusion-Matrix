@@ -66,7 +66,6 @@ def main():
     df_new, df, df_sample, model_txt, model_metrics, description_decoder, district_decoder, neighborhood_decoder, premise_decoder, call_desc, call_desc_decoder = load_data('./data/TRAIN_911_DEMO_MERGED_ENCODED.CSV', './data/BPD_CRIME_DATA_CLEAN_ST.csv', './data/Description_decoder_2.csv',
                                                                              './data/District_decoder.csv', './data/Neighborhood_decoder.csv', './data/Premise_decoder.csv', './911MODEL.txt', './data/Score_metrics.csv', './data/911_Call_Description_decoder.csv')
 
-    st.write(df_new.columns)
     ##################################################################################################################
 
     # PREDICT
