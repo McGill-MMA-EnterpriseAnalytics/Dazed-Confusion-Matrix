@@ -279,7 +279,9 @@ ROBBERY - STREET: 12
 SEXUAL ASSAULT: 13  
 SHOOTING: 14  
 
+### Additional Models
 
+Following some literature review, our team also decided to test some neural networks, to determine their viability on our current dataset and creating predictions. There were 4 separate neural networks built, including a _[Bayesian Network](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Bayesian%20Network.ipynb)_. The other 3 networks, which also includes an AutoKeras neural network, can be found in this _[file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Neural_Nets_Policing.ipynb)_. While we found that neural networks do have potential in predictive policing, as has been stated in the literature, in our work its accuracy is far below our lightGBM model. 
 
 ## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
@@ -303,11 +305,11 @@ The main notebook in this section is _[CausalResultsBinary.ipynb](https://github
 
 
 
-## _[10. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
+## _[10. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt/Dazed_Confusion_2_0_FINAL_PRESENTATION.pdf)_
 - 	Document what you have done
-- Context
---   Context should present your understanding of the business problem
---  You should frame the problem such that is understandable for different stakeholders
+-  Context
+-- Context should present your understanding of the business problem
+-- You should frame the problem such that is understandable for different stakeholders
 -- It should cover a bried resume of 5.1.Framing the problem
 -- It should give statistics about the current situation
 -- It should present objectives and benefits
