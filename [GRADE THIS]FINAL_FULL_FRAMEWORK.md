@@ -315,7 +315,7 @@ Our powerpoint presentation can be accessed from the hyperlink above, and detail
 - 	[Lessons Learned and Next Steps](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Future_Work.md)
 
 
-## _[8. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/App)_
+## _[8. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/App)_
 The main dashboard file is _[app.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/app.py)_. We use Streamlit for the front-end and you can run it from that directory using *streamlit run app.py*  
 The app uses _[SessionState.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/SessionState.py)_ to handle password authentication when first landing on the page  
 The main section of the dashboard can be broken down into a few parts:
