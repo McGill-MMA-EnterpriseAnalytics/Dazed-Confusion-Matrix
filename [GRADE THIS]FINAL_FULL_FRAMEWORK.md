@@ -279,6 +279,8 @@ ROBBERY - STREET: 12
 SEXUAL ASSAULT: 13  
 SHOOTING: 14  
 
+Some other explainability details are included in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/SHAP_911_model.ipynb)_. An interactive force plot shows the model output across all records, while the dependence plots how each pair of features interact.
+
 ### Additional Models
 
 Following some literature review, our team also decided to test some neural networks, to determine their viability on our current dataset and creating predictions. There were 4 separate neural networks built, including a _[Bayesian Network](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Bayesian%20Network.ipynb)_. The other 3 networks, which also includes an AutoKeras neural network, can be found in this _[file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Neural_Nets_Policing.ipynb)_. While we found that neural networks do have potential in predictive policing, as has been stated in the literature, in our work its accuracy is far below our lightGBM model. 
