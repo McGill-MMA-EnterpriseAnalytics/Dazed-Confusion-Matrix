@@ -297,15 +297,15 @@ Following some literature review, our team also decided to test some neural netw
 
 ## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Don't need this section. Covered in 5.
+Covered in 5.
 
 ## _[7. Model Selection](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Don't need this section. Covered in 5.
+Covered in 5.
 
 ## _[8. Model Fine-Tuning](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Don't need this section. Covered in 5.
+Covered in 5.
 
 ## _[9. Causal Inference](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Causal)_
 This section is related to the Ethical AI part explained above as we try to understand the effect of demographic data on our model.   
