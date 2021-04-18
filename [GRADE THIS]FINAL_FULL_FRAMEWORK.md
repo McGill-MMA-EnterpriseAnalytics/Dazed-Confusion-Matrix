@@ -1,5 +1,7 @@
 # FRAMEWORK EXPLANATIONS
 ---
+Relevant hyperlinks point to further details and locations of notebooks and other documents.
+
 ## 1. Framing the Problem
 *Define the objective in business terms*
 
@@ -199,24 +201,10 @@ After scanning through some studies on urban crime, we found 911 calls were ofte
 
 Then we droppe all duplicated matches as we observed multiple calls were reporting for the same crime. This left us about 9000 unique matches, which is good enough to split a test and validation set.
 
-## _[3. Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Visualization.ipynb)_
-- 	Create a copy of the data for exploration (sampling it down to a manageable size if necessary)
-- 	Create a Jupyter notebook to keep a record of your data exploration
-- How do you profile your data?
-- Download a dataset and provide: Missing Data (%), Quantile Statistics, Descriptive Statistics, Correlations
-- Study each attribute and its characteristics
-- Name Type (categorical, int/float, bounded/unbounded,text,structured, etc.)
-- % of missing values
-- Noisiness and type of noise (stochastic, outliers, rounding errors, etc.)
-- Possibly useful for the task?
-- Type of distribution (Gaussian, uniform, logarithmic, etc.)
-- For supervised learning tasks, identify the target attributes
-- 	Visualize the data
-- 	Study the correlations between attributes
-- 	Study how you would solve the problem manually
-- 	Identify the promising transformations you may want to apply
-- 	Identify extra data that would be useful (go back to “Get the Data”)
-- 	Document what you have learned
+## _[3. Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Cleaning)_
+
+The majority of the data exploration was done in the first course. The data contains some 270,000 rows with features such as the date, time, location of crimes, as well as the type of weapons used. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Cleaning/Cleaning_Part1.ipynb)_ for details. This _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Cleaning/Cleaning_Part2.ipynb)_ details some further data exploration and cleaning, researching what features could be dropped, and how the features were encoded for analysis. Further details are included in section 4 with subsequent analysis and new data sources.
+
 
 ## _[4. Data Preparation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Cleaning)_
 
@@ -239,7 +227,7 @@ Unlike the original data where it was a bit questionable to impute features such
 The test data was imputed using the same miceforest model as for the train data. The neighborhood-level imputation was done similarly, taking the mean of the imputed values by neighborhood. See this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Model_Development/Impute_test_data_demographics.ipynb)_ for details. 
 
 
-## _[5. Modeling](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
+## _[5. Modeling, Evaluation, Explainability](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
 ### Base Model With Newly-Cleaned Data
 
@@ -295,19 +283,8 @@ SHOOTING: 14
 
 Following some literature review, our team also decided to test some neural networks, to determine their viability on our current dataset and creating predictions. There were 4 separate neural networks built, including a _[Bayesian Network](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Bayesian%20Network.ipynb)_. The other 3 networks, which also includes an AutoKeras neural network, can be found in this _[file](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Neural_Nets_Policing.ipynb)_. While we found that neural networks do have potential in predictive policing, as has been stated in the literature, in our work its accuracy is far below our lightGBM model. 
 
-## _[6. Model Evaluation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
 
-Covered in 5.
-
-## _[7. Model Selection](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
-
-Covered in 5.
-
-## _[8. Model Fine-Tuning](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Model_Development)_
-
-Covered in 5.
-
-## _[9. Causal Inference](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Causal)_
+## _[6. Causal Inference](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/Causal)_
 This section is related to the Ethical AI part explained above as we try to understand the effect of demographic data on our model.   
 Our main code uses the Causal Lift package and can be found at _[CausalModel](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Causal/CausalModel.py)_  
 The main notebook in this section is _[CausalResultsBinary.ipynb](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Causal/CausalResultsBinary.ipynb)_  
@@ -317,33 +294,26 @@ The main notebook in this section is _[CausalResultsBinary.ipynb](https://github
 
 
 
-## _[10. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt/Dazed_Confusion_2_0_FINAL_PRESENTATION.pdf)_
+## _[7. Solution Presentation](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt/Dazed_Confusion_2_0_FINAL_PRESENTATION.pdf)_
+
+Our powerpoint presentation can be accessed from the hyperlink above, and details the following:
 - 	Document what you have done
 -  Context
--- Context should present your understanding of the business problem
--- You should frame the problem such that is understandable for different stakeholders
--- It should cover a bried resume of 5.1.Framing the problem
--- It should give statistics about the current situation
--- It should present objectives and benefits
+- Understanding of the business problem
+- Framing of the problem
+- Statistics about the current situation
+- Objectives and benefits
 - [Hypothesis](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Hypotheses.md)
-- Document and communicate the hypotheses in terms of 
---What can be predicted/optimized
--- What are the actions can be taken
--- What are the possible outcomes
--- Communicate your hypothesis testing strategy to the right audience
---Null hypothesis
---Outcomes and types of errors
--- P-values and confidence intervals			
---Multiple testing and p-hacking
 - Data
-- Model	- Modeling Approach & Model Evaluation
+- Models	- Modeling Approach & Model Evaluation
 - Results
--- 	Explainability of Results
+- 	Explainability of Results
 - 	[Threats to Validity](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Threats_to_Validity.md)
 - 	Conclusion
 - 	[Lessons Learned and Next Steps](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Future_Work.md)
 
-## _[11. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/dev/App)_
+
+## _[8. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/dev/App)_
 The main dashboard file is _[app.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/app.py)_. We use Streamlit for the front-end and you can run it from that directory using *streamlit run app.py*  
 The app uses _[SessionState.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/SessionState.py)_ to handle password authentication when first landing on the page  
 The main section of the dashboard can be broken down into a few parts:
@@ -356,13 +326,7 @@ The main section of the dashboard can be broken down into a few parts:
 - Other info displays a 3D map of baltimore with our initial data  
 In addition, the _[.streamlit](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/.streamlit)_ folder is used for all front-end configurations
 
-## _[12. Launching, Monitoring and Maintenance](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
-- Get your solution ready for production (plug into production data inputs, write unit tests, etc.)
-- Monitoring code to check your system’s live performance at regular intervals and trigger alerts when it drops.
-- Beware of slow degradation too: models tend to “rot” as data evolves
-- Measuring performance may require a human pipeline (e.g. via a crowdsourcing service)
-- Also monitor your inputs’ quality (e.g., a malfunctioning sensor sending random values, or another team’s output becoming stale). This is particularly important for online learning systems
-- Retrain your models on a regular basis on fresh data
+## _[9. Launching, Monitoring and Maintenance](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/ppt)_
 
 Our main areas of focus have been on project deployment and testing.
 
