@@ -1,0 +1,66 @@
+# There were models and methods previously tested that did not work
+
+#%%
+# Create model
+model = CausalModel(data=df,
+                    treatment=treatment_name,
+                    outcome=outcome_name,
+                    common_causes=common_causes_names
+                    )
+
+#%%
+
+# View graph
+# model.view_model()
+display(Image(filename="causal_model.png"))
+
+#%%
+
+# Identify effect
+identified_estimand = model.identify_effect(proceed_when_unidentifiable=True)
+
+estimate = model.estimate_effect(identified_estimand, method_name="backdoor.linear_regression")
+print(estimate)
+print("Causal Estimate is " + str(estimate.value))
+
+#%%
+
+# Refute
+
+# Common cause
+res_random=model.refute_estimate(identified_estimand, estimate, method_name="random_common_cause")
+print(res_random)
+
+#%%
+
+# Bootstrap
+res_random=model.refute_estimate(identified_estimand, estimate, method_name="bootstrap_refuter")
+print(res_random)
+
+#%%
+
+# Subset
+res_random=model.refute_estimate(identified_estimand, estimate, method_name="data_subset_refuter")
+print(res_random)
+
+#%%
+
+# Placebo
+res_random=model.refute_estimate(identified_estimand, estimate, method_name="placebo_treatment_refuter")
+print(res_random)
+
+#%%
+
+uplift_model = UpliftTreeClassifier(max_depth=3, min_samples_leaf=100, min_samples_treatment=25,
+                                    n_reg=50, evaluationFunction='KL', control_name='control')
+
+#%%
+
+uplift_model.fit(df2[['Description', 'control', 'Weapon', 'Neighborhood', 'Season']].values,
+                 treatment=df2['control'].values,
+                 y=df2['Description'].values)
+
+#%%
+
+graph = uplift_tree_plot(uplift_model.fitted_uplift_tree, features)
+Image(graph.create_png())

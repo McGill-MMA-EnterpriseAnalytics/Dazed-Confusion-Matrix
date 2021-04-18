@@ -1,0 +1,79 @@
+# this is to keep track of the transformations
+
+
+# make sure to uppercase everything first
+
+df['Premise'] = df['Premise'].str.upper()
+
+# Premise Modifications
+
+df['Premise'] = df['Premise'].replace('GARAGE ON', 'SHED/GARAGE')
+df['Premise'] = df['Premise'].replace('APT. LOCKE', 'APARTMENT')
+df['Premise'] = df['Premise'].replace('APT/CONDO', 'APARTMENT')
+df['Premise'] = df['Premise'].replace('COMMON BUS', 'BUS/AUTO')
+df['Premise'] = df['Premise'].replace('HOSP/NURS.', 'HOSPITAL')
+df['Premise'] = df['Premise'].replace('VEHICLE', 'BUS/AUTO')
+df['Premise'] = df['Premise'].replace('PRIVATE SC', 'SCHOOL')
+df['Premise'] = df['Premise'].replace('PUBLIC SCH', 'SCHOOL')
+df['Premise'] = df['Premise'].replace('TAVERN/NIG', 'BAR')
+df['Premise'] = df['Premise'].replace('RAILROAD C', 'BUS/RAILRO')
+df['Premise'] = df['Premise'].replace('COMMON BUS', 'BUS/AUTO')
+df['Premise'] = df['Premise'].replace('CHURCH', 'RELIGIOUS')
+df['Premise'] = df['Premise'].replace('ARENA', 'STADIUM')
+df['Premise'] = df['Premise'].replace('YARD/BUSIN', 'YARD')
+df['Premise'] = df['Premise'].replace('PIZZA/OTHE', 'RESTAURANT')
+df['Premise'] = df['Premise'].replace('DAY CARE F', 'SCHOOL PLA')
+df['Premise'] = df['Premise'].replace('MANUFACTUR', 'WAREHOUSE')
+df['Premise'] = df['Premise'].replace('MOBILE HOM', 'DWELLING')
+df['Premise'] = df['Premise'].replace('BOX CARS/C', 'BUS/RAILRO')
+df['Premise'] = df['Premise'].replace('PHOTO STUD', 'RETAIL/SMA')
+df['Premise'] = df['Premise'].replace('TRUCKING &', 'TRACTOR TR')
+df['Premise'] = df['Premise'].replace('SKYWALK', 'PUBLIC ARE')
+df['Premise'] = df['Premise'].replace('FINANCE/LO', 'BANK/FINAN')
+df['Premise'] = df['Premise'].replace('STRUCTURE-', 'UNKNOWN')
+df['Premise'] = df['Premise'].replace('BLDG UNDER', 'CONSTRUCTI')
+df['Premise'] = df['Premise'].replace('HOUSE UNDE', 'CONSTRUCTI')
+df['Premise'] = df['Premise'].replace('MAILBOX-ST', 'STREET')
+df['Premise'] = df['Premise'].replace('RENTAL/VID', 'RETAIL/SMA')
+
+
+
+# Other Modifications
+
+df['Neighborhood'] = df['Neighborhood'].replace('Patterson Park Neighborho', 'Patterson Park')
+
+df.CrimeDate = pd.to_datetime(df.CrimeDate)
+df['Month'] = df.CrimeDate.dt.month
+
+df['CrimeTime'] = [time if time != "24:00:00" else "0:00:00" for time in df['CrimeTime']]
+df.CrimeTime = pd.to_datetime(df['CrimeTime'],format= '%H:%M:%S').dt.time
+df['Hour'] = [int(str(time)[:2]) for time in df.CrimeTime]
+
+df['Inside/Outside'] = df['Inside/Outside'].str.upper()
+df['Inside/Outside'] = df['Inside/Outside'].replace('I', 'INSIDE')
+df['Inside/Outside'] = df['Inside/Outside'].replace('O', 'OUTSIDE')
+df = pd.get_dummies(df, columns=["Inside/Outside"],drop_first=True)
+df = df.rename(columns={"Inside/Outside_OUTSIDE":"Outside"})
+
+
+df['Weapon'] = df['Weapon'].fillna('NONE')
+df = pd.get_dummies(df, columns=["Weapon"])
+
+
+df['Description'] = df['Description'].replace('RAPE', 'SEXUAL ASSAULT')
+
+
+from pandas.tseries.holiday import USFederalHolidayCalendar
+calendar = USFederalHolidayCalendar()
+df.CrimeDate = pd.to_datetime(df.CrimeDate)
+
+# Enter proper date range
+dr = pd.date_range(start='2012-01-01', end='2017-09-02')
+holidays = calendar.holidays(start=dr.min(), end=dr.max())
+df['Holiday'] = df['CrimeDate'].isin(holidays)
+df['Holiday'] = df['Holiday'].replace(False, 0)
+df['Holiday'] = df['Holiday'].replace(True, 1)
+
+df["Weekday"] = pd.to_datetime(df["CrimeDate"]).dt.dayofweek
+df["Weekend"] = (df["Weekday"] > 4).astype(int)
+df = df.drop(columns=["Weekday"])
