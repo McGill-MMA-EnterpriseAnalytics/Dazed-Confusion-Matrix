@@ -334,7 +334,7 @@ Our main areas of focus have been on project deployment and testing.
 
 In terms of deployment we first focused on Docker.  
 - We have our _[Dockerfile](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Dockerfile)_ that builds the project and also runs Pytest
-- We have a _[dockerbuild.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/dockerbuild.txt))_ with steps to get requirements and pushing to Azure registry
+- We have a _[dockerbuild.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/dockerbuild.txt)_ with steps to get requirements and pushing to Azure registry
 - We have _[requirements.txt](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/dockerbuild.txt)_ for all the libraries used
 
 Our second deployment step focuses on Continuous Integration (CI) with Jenkins:
