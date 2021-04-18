@@ -279,7 +279,7 @@ ROBBERY - STREET: 12
 SEXUAL ASSAULT: 13  
 SHOOTING: 14  
 
-Some other explainability details are included in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/SHAP_911_model.ipynb)_. An interactive force plot shows the model output across all records, while the dependence plots how each pair of features interact.
+Some other explainability details are included in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/SHAP_911_model.ipynb)_. An interactive force plot shows the model output across all records, while the dependence plots show how each pair of features interact.
 
 ### Additional Models
 
@@ -315,7 +315,7 @@ Our powerpoint presentation can be accessed from the hyperlink above, and detail
 - 	[Lessons Learned and Next Steps](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Project_Framework/Future_Work.md)
 
 
-## _[8. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/dev/App)_
+## _[8. Dashboard](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/master/App)_
 The main dashboard file is _[app.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/app.py)_. We use Streamlit for the front-end and you can run it from that directory using *streamlit run app.py*  
 The app uses _[SessionState.py](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/App/SessionState.py)_ to handle password authentication when first landing on the page  
 The main section of the dashboard can be broken down into a few parts:
@@ -342,7 +342,7 @@ Our second deployment step focuses on Continuous Integration (CI) with Jenkins:
 - We configured the _[Jenkinsfile](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Jenkinsfile)_ using the Jenkins Blue Ocean plugin
 - The Jenkins pipeline builds, tests, and then runs the Docker image  
 
-We also have a _[testing](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/dev/App/Testing)_ folder.
+We also have a _[testing](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/tree/master/App/Testing)_ folder.
 - Tests are run with Pytest which is lightweight and easy to use
 - We have some basic tests as proof of concept for the dashboard inputs and model quality
 - Future users can build on these by adding more coverage or extend it to the entire code
