@@ -1,6 +1,6 @@
 # FRAMEWORK EXPLANATIONS
 ---
-Relevant hyperlinks point to further details and locations of notebooks and other documents.
+Relevant hyperlinks point to further details, locations of notebooks, and other documents.
 
 ## 1. Framing the Problem
 *Define the objective in business terms*
