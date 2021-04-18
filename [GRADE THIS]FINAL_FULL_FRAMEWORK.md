@@ -199,7 +199,7 @@ After scanning through some studies on urban crime, we found 911 calls were ofte
 - Exact match between the street address from the 911 call and the documented crime
 - Assume 911 call was made within 24 hours of the documented crime time
 
-Then we droppe all duplicated matches as we observed multiple calls were reporting for the same crime. This left us about 9000 unique matches, which is good enough to split a test and validation set.
+Then we dropped all duplicated matches as we observed multiple calls were reporting for the same crime. This left us about 9000 unique matches, which is good enough to split a test and validation set.
 
 ## _[3. Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Cleaning)_
 
