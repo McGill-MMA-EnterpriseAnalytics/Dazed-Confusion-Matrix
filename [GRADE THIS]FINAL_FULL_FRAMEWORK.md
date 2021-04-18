@@ -10,6 +10,8 @@
 >- This has caused calls for reform, the most extreme ones being defunding of the police department 
 >- “The better answer is to give police departments the resources they need to implement meaningful reforms” - Joe Biden when talking about police reform 
 >- The objective in this case is to better prepare officers for crime handling by predicting the nature of the crime before the officers arrive on the scene. >- We believe that officers that are more prepared for the type of incident that they will encounter, will be able to handle the incident more efficiently and without excessive use of force. 
+>-_[With 58 murders per 100,000 residents in 2019, Baltimore is the deadliest U.S. city..."](https://www.wsj.com/articles/the-wire-is-finished-but-baltimore-still-bleeds-11581119104)_
+>-_["The better answer is to give police departments the resources they need to implement meaningful reforms..."](https://www.usatoday.com/story/opinion/2020/06/10/biden-root-out-systemic-racism-not-just-divisive-trump-talk-column/5327631002/)_
 
 *How will your solution be used?*
 
@@ -172,20 +174,30 @@ In the second part of the project, we wanted to add to our dataset to make bette
 
 Baltimore collects this data by what they call a Community Statistical Area (CSA). Each CSA is composed of a few neighborhoods, and often times it is hard to determinne which CSA a neighborhood belongs to solely based off name. Therefore, we had to manually match each neighborhood to its corresponding CSA. The matching file can be found here: _[neighborhoods.csv](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/data/neighborhoods.csv)_
 
+### Ethical AI - Demographic Data Inclusion
+One of the main issues with the demographic data was that there was a ton of missing information. On one hand, there were some neighborhoods in our data that were not associated with a CSA. On the other hand, not all data was collected every year, so we had some years where we were missing all information. Imputing demographic data can come with its own ethical issues, because you don't want to improperly impute and thus mask or augment some of the bias in the model. Therefore, for the missing years, we imputed the data with the median value for the same CSA in the years we had the data for. The cleaning, matching, and merging of the demographic data for the training data can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/V2_Demographic_Data_Cleaning_Merging.ipynb)_. The same process was used for the test data and can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Test_data_demo_merging.ipynb)_.
+
+People inherently possess bias, and as analysts, data scientists and architects, we must recognize the bias that is being injected into our models. There is a fear with predictive policing that by including demographic data (socioeconomic, race, neighbourhood, etc.) that the use of police force on minorities will increase. While we are aware that there is some bias present in our model due to the nature of the demographic data itself, we also recognize that most of this information is relevant and has demonstrated statistically significant correlations. 
+
+#### Poverty & Crime
+> _[“… poverty is the dominant explanatory factor with regard to aggravated assault & burglary.”](https://mcgill.on.worldcat.org/oclc/5153758805)_
+> _[“The findings imply that problems in neighborhoods begin to manifest themselves at much lower levels of poverty.”](https://mcgill.on.worldcat.org/oclc/5156616079)_
+
+#### Urbanization & Crime
+>_[“…urbanisation encourages crime as the rate of crime is higher in large cities and in urbanised areas.”](https://go.gale.com/ps/anonymous?id=GALE%7CA302769876&sid=googleScholar&v=2.1&it=r&linkaccess=abs&issn=00309729&p=AONE&sw=w#:~:text=From%20the%20economic%20point%20of,cities%20and%20in%20urbanised%20areas.)_
+
+
+#### Baltimore Facts 
+>_[Highest Youth Crime Rates](https://foxbaltimore.com/news/city-in-crisis/nearly-half-of-suspects-recently-arrested-by-bpd-for-violent-crimes-are-juveniles)_
+>_[High Youth Homicide Rate](https://youthtoday.org/2018/10/baltimore-is-tackling-the-problem-of-youth-violence-with-its-ceasefire-movement/)_
+
+
 ### Data Augmentation - 911 Calls
 After scanning through some studies on urban crime, we found 911 calls were often studied as a potential factor. So we downloaded 911 calls data from https://data.baltimorecity.gov/datasets/911-calls-for-service, and matched with our main crime datasets. The matching was performed based on two criteria:
 - Exact match between the street address from the 911 call and the documented crime
 - Assume 911 call was made within 24 hours of the documented crime time
 
 Then we droppe all duplicated matches as we observed multiple calls were reporting for the same crime. This left us about 9000 unique matches, which is good enough to split a test and validation set.
-
-
-
-#### Ethical AI - Merging the Data
-One of the main issues with the demographic data was that there was a ton of missing information. On one hand, there were some neighborhoods in our data that were not associated with a CSA. On the other hand, not all data was collected every year, so we had some years where we were missing all information. Imputing demographic data can come with its own ethical issues, because you don't want to improperly impute and thus mask or augment some of the bias in the model. Therefore, for the missing years, we imputed the data with the median value for the same CSA in the years we had the data for. The cleaning, matching, and merging of the demographic data for the training data can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/V2_Demographic_Data_Cleaning_Merging.ipynb)_. The same process was used for the test data and can be found in this _[notebook](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/dev/Cleaning/Test_data_demo_merging.ipynb)_.
-
-
-
 
 ## _[3. Data Exploration](https://github.com/McGill-MMA-EnterpriseAnalytics/Dazed-Confusion-Matrix/blob/master/Model_Development/Visualization.ipynb)_
 - 	Create a copy of the data for exploration (sampling it down to a manageable size if necessary)
